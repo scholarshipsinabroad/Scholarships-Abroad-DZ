@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title>بوابة التسجيل في المنح الدراسية الإقليمية</title>
+    <title id="doc-title">بوابة التسجيل في المنح الدراسية الإقليمية</title>
     <meta name="title" content="بوابة التسجيل في المنح الدراسية الإقليمية">
     <meta property="og:title" content="بوابة التسجيل في المنح الدراسية الإقليمية">
 
@@ -23,12 +23,17 @@
             src: url('TheSans-Plain.otf (1).ttf') format('truetype');
         }
 
-        /* توحيد الأرقام اللاتينية 0 1 2 3 */
         body {
             background-color: #f8fafc;
             font-family: 'HanaFont', system-ui, -apple-system, sans-serif;
             font-feature-settings: "lnum" 1, "tnum" 1;
             overflow-x: hidden;
+        }
+
+        .en-num {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+            direction: ltr;
+            display: inline-block;
         }
 
         .font-hana { font-family: 'HanaFont', sans-serif !important; }
@@ -60,22 +65,35 @@
             transition: all 0.6s ease-out;
         }
 
-        /* الشعار الرسمي الوطني المظلل */
-        .official-emblem {
-            width: 46 h-46;
-            background: linear-gradient(135deg, #006233 0%, #00331b 100%);
+        /* إطار الشعار الرسمي المظلل */
+        .official-logo-frame {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #111827;
             border: 2px solid #d4af37;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .official-logo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800">
 
-    <!-- 1. واجهة التحميل (بدون لغات) -->
+    <!-- 1. واجهة التحميل -->
     <div id="preloader" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-white">
         <div class="relative flex flex-col items-center">
             <div class="dz-spinner mb-6"></div>
-            <p class="font-hana text-2xl font-bold text-slate-900">جاري التحميل</p>
+            <p id="loader-text" class="font-hana text-2xl font-bold text-slate-900">جاري التحميل</p>
         </div>
     </div>
 
@@ -83,30 +101,29 @@
     <header class="bg-slate-900 text-white shadow-lg sticky top-0 z-50 border-b border-slate-800">
         <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
             
-            <!-- أقصى اليمين: الشعار الرسمي والنص -->
+            <!-- أقصى اليمين: الشعار الخاص المرفع مع النص الرسمي -->
             <div class="flex items-center gap-3">
-                <div class="w-11 h-11 rounded-full official-emblem flex items-center justify-center text-amber-400 text-xl shadow-md shrink-0">
-                    <i class="fa-solid fa-graduation-cap drop-shadow"></i>
+                <div class="official-logo-frame">
+                    <img src="IMG_20260825_014458.png" alt="شعار المنصة">
                 </div>
                 <div>
-                    <h1 class="font-hana text-base sm:text-lg font-bold leading-tight text-slate-100">بوابة التسجيل في المنح الدراسية الإقليمية</h1>
-                    <p class="text-xs text-slate-400 font-thesans">الجمهورية الجزائرية الديمقراطية الشعبية</p>
+                    <h1 id="nav-title" class="font-hana text-base sm:text-lg font-bold leading-tight text-slate-100">بوابة التسجيل في المنح الدراسية الإقليمية</h1>
+                    <p id="nav-subtitle" class="text-xs text-slate-400 font-thesans">الجمهورية الجزائرية الديمقراطية الشعبية</p>
                 </div>
             </div>
 
-            <!-- أقصى اليسار: زر التسجيل وتحته قائمة اللغات -->
+            <!-- أقصى اليسار: زر التسجيل وتحته قائمة اللغات التفاعلية -->
             <div class="flex flex-col items-end gap-1.5">
-                <button class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm px-5 py-2 rounded-lg font-bold transition shadow-md border border-emerald-500/30">
+                <button id="btn-login" class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm px-5 py-2 rounded-lg font-bold transition shadow-md border border-emerald-500/30">
                     تسجيل الدخول
                 </button>
                 
-                <!-- خيارات اللغات تحت زر تسجيل الدخول -->
                 <div class="flex items-center gap-2 text-[11px] font-thesans text-slate-400 px-1">
-                    <button class="hover:text-emerald-400 transition font-bold text-emerald-400">العربية</button>
+                    <button onclick="changeLanguage('ar')" id="lang-ar" class="hover:text-emerald-400 transition font-bold text-emerald-400">العربية</button>
                     <span>•</span>
-                    <button class="hover:text-emerald-400 transition">Français</button>
+                    <button onclick="changeLanguage('fr')" id="lang-fr" class="hover:text-emerald-400 transition">Français</button>
                     <span>•</span>
-                    <button class="hover:text-emerald-400 transition">English</button>
+                    <button onclick="changeLanguage('en')" id="lang-en" class="hover:text-emerald-400 transition">English</button>
                 </div>
             </div>
 
@@ -117,23 +134,22 @@
     <section class="bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-white py-14 px-4 text-center border-b border-slate-800">
         <div class="max-w-4xl mx-auto">
             <span class="inline-block bg-emerald-500/10 text-emerald-400 text-xs px-4 py-1.5 rounded-full font-bold border border-emerald-500/20 mb-4 shadow-inner">
-                التسجيلات الجامعية خارج الوطن 2027-2028
+                <span id="hero-badge-prefix">التسجيلات الجامعية خارج الوطن</span> <span class="en-num">2027-2028</span>
             </span>
             
-            <h2 class="font-hana text-3xl sm:text-5xl font-extrabold mt-2 mb-6 leading-relaxed text-slate-50">
+            <h2 id="hero-title" class="font-hana text-3xl sm:text-5xl font-extrabold mt-2 mb-6 leading-relaxed text-slate-50">
                 الأرضية الرقمية الرسمية للتسجيل في المنح الدراسية
             </h2>
             
-            <p class="text-slate-300 text-base sm:text-lg max-w-3xl mx-auto font-thesans leading-relaxed">
+            <p id="hero-desc" class="text-slate-300 text-base sm:text-lg max-w-3xl mx-auto font-thesans leading-relaxed">
                 المنصة الموحدة للطلاب الراغبين في التقديم على المنح الدراسية الإقليمية والدولية
             </p>
         </div>
     </section>
 
-    <!-- 4. واجهة دعوة التسجيل الرسمية (بدلاً من استمارة البيانات والأقسام الملتغاة) -->
+    <!-- 4. واجهة دعوة التسجيل الرسمية -->
     <section class="max-w-4xl mx-auto px-4 py-20 text-center">
         <div class="bg-white p-10 sm:p-14 rounded-3xl shadow-xl border border-slate-200/80 relative overflow-hidden">
-            <!-- خلفية فخمة خفيفة -->
             <div class="absolute -top-24 -right-24 w-48 h-48 bg-emerald-50 rounded-full blur-3xl pointer-events-none"></div>
             <div class="absolute -bottom-24 -left-24 w-48 h-48 bg-blue-50 rounded-full blur-3xl pointer-events-none"></div>
 
@@ -142,18 +158,17 @@
                     <i class="fa-solid fa-paper-plane"></i>
                 </div>
 
-                <h3 class="font-hana text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4 leading-snug">
+                <h3 id="cta-title" class="font-hana text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4 leading-snug">
                     ما الذي تنتظره! قم بالتسجيل الآن
                 </h3>
                 
-                <p class="text-lg sm:text-xl font-bold text-emerald-600 font-thesans mb-10">
+                <p id="cta-subtitle" class="text-lg sm:text-xl font-bold text-emerald-600 font-thesans mb-10">
                     ملايين المنح تنتظرك في الخارج
                 </p>
 
-                <!-- زر رسمي بمرتبة كلاسيكية وفخمة -->
                 <a href="#register" class="inline-flex items-center justify-center gap-3 bg-gradient-to-r from-emerald-700 to-emerald-600 hover:from-emerald-800 hover:to-emerald-700 text-white font-hana font-bold text-xl px-12 py-4 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all border border-emerald-500/30">
-                    <span>التسجيل الآن</span>
-                    <i class="fa-solid fa-arrow-left text-base"></i>
+                    <span id="btn-register">التسجيل الآن</span>
+                    <i id="btn-icon" class="fa-solid fa-arrow-left text-base"></i>
                 </a>
             </div>
         </div>
@@ -161,16 +176,105 @@
 
     <!-- 5. التذييل (Footer) -->
     <footer class="bg-slate-900 text-slate-400 py-6 text-center text-xs font-thesans border-t border-slate-800">
-        <p>© 2027-2028 بوابة التسجيل في المنح الدراسية الإقليمية. جميع الحقوق محفوظة.</p>
+        <p>© <span class="en-num">2027-2028</span> <span id="footer-text">بوابة التسجيل في المنح الدراسية الإقليمية. جميع الحقوق محفوظة.</span></p>
     </footer>
 
+    <!-- نظام الترجمة البرمجي (JavaScript) -->
     <script>
+        // إخفاء التحميل
         window.addEventListener('load', function() {
             setTimeout(function() {
                 const preloader = document.getElementById('preloader');
-                preloader.classList.add('preloader-fade-out');
-            }, 2500); 
+                if(preloader) preloader.classList.add('preloader-fade-out');
+            }, 2000); 
         });
+
+        // قاموس الترجمات للغات الثلاث
+        const translations = {
+            ar: {
+                dir: 'rtl',
+                docTitle: 'بوابة التسجيل في المنح الدراسية الإقليمية',
+                loaderText: 'جاري التحميل',
+                navTitle: 'بوابة التسجيل في المنح الدراسية الإقليمية',
+                navSubtitle: 'الجمهورية الجزائرية الديمقراطية الشعبية',
+                btnLogin: 'تسجيل الدخول',
+                heroBadgePrefix: 'التسجيلات الجامعية خارج الوطن',
+                heroTitle: 'الأرضية الرقمية الرسمية للتسجيل في المنح الدراسية',
+                heroDesc: 'المنصة الموحدة للطلاب الراغبين في التقديم على المنح الدراسية الإقليمية والدولية',
+                ctaTitle: 'ما الذي تنتظره! قم بالتسجيل الآن',
+                ctaSubtitle: 'ملايين المنح تنتظرك في الخارج',
+                btnRegister: 'التسجيل الآن',
+                btnIconClass: 'fa-solid fa-arrow-left text-base',
+                footerText: 'بوابة التسجيل في المنح الدراسية الإقليمية. جميع الحقوق محفوظة.'
+            },
+            fr: {
+                dir: 'ltr',
+                docTitle: 'Portail d\'inscription aux bourses régionales',
+                loaderText: 'Chargement en cours...',
+                navTitle: 'Portail d\'inscription aux bourses régionales',
+                navSubtitle: 'République Algérienne Démocratique et Populaire',
+                btnLogin: 'Se connecter',
+                heroBadgePrefix: 'Inscriptions universitaires à l\'étranger',
+                heroTitle: 'Plateforme Numérique Officielle d\'Inscription aux Bourses',
+                heroDesc: 'La plateforme unifiée pour les étudiants souhaitant postuler aux bourses régionales et internationales',
+                ctaTitle: 'Qu\'attendez-vous ? Inscrivez-vous maintenant !',
+                ctaSubtitle: 'Des millions de bourses vous attendent à l\'étranger',
+                btnRegister: 'S\'inscrire maintenant',
+                btnIconClass: 'fa-solid fa-arrow-right text-base',
+                footerText: 'Portail d\'inscription aux bourses régionales. Tous droits réservés.'
+            },
+            en: {
+                dir: 'ltr',
+                docTitle: 'Regional Scholarships Registration Portal',
+                loaderText: 'Loading...',
+                navTitle: 'Regional Scholarships Registration Portal',
+                navSubtitle: 'People\'s Democratic Republic of Algeria',
+                btnLogin: 'Log In',
+                heroBadgePrefix: 'University Registration Abroad',
+                heroTitle: 'Official Digital Platform for Scholarship Registration',
+                heroDesc: 'The unified platform for students seeking to apply for regional and international scholarships',
+                ctaTitle: 'What are you waiting for! Register now',
+                ctaSubtitle: 'Millions of scholarships await you abroad',
+                btnRegister: 'Register Now',
+                btnIconClass: 'fa-solid fa-arrow-right text-base',
+                footerText: 'Regional Scholarships Registration Portal. All rights reserved.'
+            }
+        };
+
+        // دالة تغيير اللغة والاتجاه
+        function changeLanguage(lang) {
+            const data = translations[lang];
+            if (!data) return;
+
+            // تغيير اتجاه وتنسيق الصفحة
+            document.documentElement.dir = data.dir;
+            document.documentElement.lang = lang;
+            document.title = data.docTitle;
+
+            // تحديث النصوص
+            document.getElementById('loader-text').textContent = data.loaderText;
+            document.getElementById('nav-title').textContent = data.navTitle;
+            document.getElementById('nav-subtitle').textContent = data.navSubtitle;
+            document.getElementById('btn-login').textContent = data.btnLogin;
+            document.getElementById('hero-badge-prefix').textContent = data.heroBadgePrefix;
+            document.getElementById('hero-title').textContent = data.heroTitle;
+            document.getElementById('hero-desc').textContent = data.heroDesc;
+            document.getElementById('cta-title').textContent = data.ctaTitle;
+            document.getElementById('cta-subtitle').textContent = data.ctaSubtitle;
+            document.getElementById('btn-register').textContent = data.btnRegister;
+            document.getElementById('btn-icon').className = data.btnIconClass;
+            document.getElementById('footer-text').textContent = data.footerText;
+
+            // تحديث تمييز أزرار اللغة (Active States)
+            ['ar', 'fr', 'en'].forEach(l => {
+                const btn = document.getElementById(`lang-${l}`);
+                if (l === lang) {
+                    btn.classList.add('text-emerald-400', 'font-bold');
+                } else {
+                    btn.classList.remove('text-emerald-400', 'font-bold');
+                }
+            });
+        }
     </script>
 </body>
 </html>
