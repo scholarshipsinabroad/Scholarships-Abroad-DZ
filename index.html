@@ -26,6 +26,26 @@
 
         .font-hana { font-family: 'HanaFont', sans-serif !important; }
         .font-thesans { font-family: 'TheSansFont', sans-serif !important; }
+        .font-num { font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important; }
+
+        /* حركات الظهور التدريجي */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out forwards;
+        }
+
+        .fade-out {
+            animation: fadeOut 0.4s ease-in-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-8px); }
+        }
 
         .dz-spinner {
             width: 70px;
@@ -70,9 +90,9 @@
 </head>
 <body class="bg-slate-100 text-slate-800 flex flex-col min-h-screen pb-12">
 
-    <!-- 1. شاشة التحميل الافتراضية عند فتح الموقع (تستمر 2 ثواني) -->
-    <div id="preloader" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-white">
-        <div class="relative flex flex-col items-center">
+    <!-- 1. شاشة التحميل الافتراضية مع تأثير الظهور والاختفاء التدريجي -->
+    <div id="preloader" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-white transition-opacity duration-500">
+        <div class="relative flex flex-col items-center fade-in">
             <div class="dz-spinner mb-6"></div>
             <p id="loader-text" class="font-hana text-2xl font-bold text-slate-900">جاري التحميل...</p>
         </div>
@@ -95,12 +115,14 @@
                 <button id="btn-login" onclick="showLoaderAndNavigate('step-profile')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm px-5 py-2 rounded-lg font-bold transition shadow-md border border-emerald-500/30">
                     تسجيل الدخول
                 </button>
+                
+                <!-- أزرار اللغات وتوهج اللغة الحالية فقط -->
                 <div class="flex items-center gap-2 text-[11px] font-thesans text-slate-400 px-1">
-                    <button onclick="changeLanguage('ar')" id="lang-ar" class="hover:text-emerald-400 transition font-bold text-emerald-400">العربية</button>
+                    <button onclick="changeLanguage('ar')" id="lang-ar" class="transition font-bold text-emerald-400 drop-shadow-[0_0_8px_rgba(52,211,153,0.8)]">العربية</button>
                     <span>•</span>
-                    <button onclick="changeLanguage('fr')" id="lang-fr" class="hover:text-emerald-400 transition">Français</button>
+                    <button onclick="changeLanguage('fr')" id="lang-fr" class="transition hover:text-emerald-400 opacity-70">Français</button>
                     <span>•</span>
-                    <button onclick="changeLanguage('en')" id="lang-en" class="hover:text-emerald-400 transition">English</button>
+                    <button onclick="changeLanguage('en')" id="lang-en" class="transition hover:text-emerald-400 opacity-70">English</button>
                 </div>
             </div>
         </div>
@@ -109,13 +131,13 @@
     <!-- المحتوى الرئيسي -->
     <main class="flex-grow">
         
-        <!-- الواجهة الرئيسية (واجهة الترحيب) -->
-        <div id="step-home" class="page-step">
+        <!-- الواجهة الرئيسية -->
+        <div id="step-home" class="page-step fade-in">
             <section class="bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-white py-14 px-4 text-center border-b border-slate-800">
                 <div class="max-w-4xl mx-auto">
                     <span class="inline-block bg-emerald-500/10 text-emerald-400 text-xs px-4 py-1.5 rounded-full font-bold border border-emerald-500/20 mb-4 shadow-inner">
                         <span id="hero-badge-prefix">التسجيلات الجامعية خارج الوطن</span> 
-                        <span dir="ltr" class="inline-block tracking-wider font-sans">2027-2028</span>
+                        <span dir="ltr" class="inline-block tracking-wider font-num">2027-2028</span>
                     </span>
                     <h2 id="hero-title" class="font-hana text-3xl sm:text-5xl font-extrabold mt-2 mb-6 leading-relaxed text-slate-50">
                         الأرضية الرقمية الرسمية للتسجيل في المنح الدراسية
@@ -154,11 +176,15 @@
                 <div class="max-w-4xl mx-auto flex justify-between items-center mb-6">
                     <div>
                         <h2 id="setup-title" class="text-2xl font-bold font-hana">إعداد الملف الشخصي</h2>
-                        <p class="text-sm text-teal-200 font-thesans mt-1"><span id="lbl-step">الخطوة</span> <span id="current-step-num">1</span> <span id="lbl-of">من</span> 5</p>
+                        <p class="text-sm text-teal-200 font-thesans mt-1">
+                            <span id="lbl-step">الخطوة</span> 
+                            <span id="current-step-num" class="font-num font-bold">1</span> 
+                            <span id="lbl-of">من</span> 
+                            <span class="font-num font-bold">5</span>
+                        </p>
                     </div>
                 </div>
 
-                <!-- شريط معلومات الملف الشخصي (خالي من البيانات تماماً وتظهر النسبة المئوية فقط) -->
                 <div class="max-w-4xl mx-auto bg-white text-slate-800 rounded-2xl shadow-lg p-4 flex items-center justify-between absolute left-1/2 -translate-x-1/2 -bottom-10 w-[92%] border border-slate-100">
                     <div class="flex items-center gap-4">
                         <div class="relative">
@@ -166,7 +192,7 @@
                                 <i class="fa-solid fa-user"></i>
                             </div>
                             <img id="user-avatar" src="" class="w-14 h-14 rounded-full object-cover border-2 border-emerald-500 shadow-sm hidden" alt="User">
-                            <span class="absolute bottom-0 right-0 bg-emerald-600 text-white text-[11px] font-bold px-1.5 py-0.5 rounded-full" id="progress-percent">0%</span>
+                            <span class="absolute bottom-0 right-0 bg-emerald-600 text-white text-[11px] font-bold px-1.5 py-0.5 rounded-full font-num" id="progress-percent">0%</span>
                         </div>
                         <div>
                             <h4 id="display-user-name" class="font-bold text-slate-400 text-base">---</h4>
@@ -176,7 +202,7 @@
                 </div>
             </div>
 
-            <!-- خط سير المراحل (1 - 5) -->
+            <!-- خط سير المراحل (أرقام 1, 2, 3, 4, 5 ثابتة لاتتغير بالخطوط العربية) -->
             <div class="max-w-4xl mx-auto px-4 pt-16 pb-12">
                 <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 sm:p-10">
                     
@@ -185,29 +211,29 @@
                         <div id="step-progress-bar" class="absolute top-1/2 right-0 h-0.5 bg-emerald-500 -translate-y-1/2 z-0 transition-all duration-500" style="width: 0%;"></div>
                         
                         <div class="relative z-10 flex flex-col items-center">
-                            <div id="circle-1" class="w-10 h-10 rounded-full border-2 border-emerald-600 bg-emerald-600 text-white font-bold flex items-center justify-center shadow">1</div>
+                            <div id="circle-1" class="w-10 h-10 rounded-full border-2 border-emerald-600 bg-emerald-600 text-white font-bold flex items-center justify-center shadow font-num">1</div>
                             <span id="st-1" class="text-xs font-bold text-emerald-600 mt-2 font-hana">البيانات الشخصية</span>
                         </div>
                         <div class="relative z-10 flex flex-col items-center">
-                            <div id="circle-2" class="w-10 h-10 rounded-full border-2 border-slate-300 bg-white text-slate-500 font-bold flex items-center justify-center">2</div>
+                            <div id="circle-2" class="w-10 h-10 rounded-full border-2 border-slate-300 bg-white text-slate-500 font-bold flex items-center justify-center font-num">2</div>
                             <span id="st-2" class="text-xs font-bold text-slate-400 mt-2 font-hana">البيانات الأساسية</span>
                         </div>
                         <div class="relative z-10 flex flex-col items-center">
-                            <div id="circle-3" class="w-10 h-10 rounded-full border-2 border-slate-300 bg-white text-slate-500 font-bold flex items-center justify-center">3</div>
+                            <div id="circle-3" class="w-10 h-10 rounded-full border-2 border-slate-300 bg-white text-slate-500 font-bold flex items-center justify-center font-num">3</div>
                             <span id="st-3" class="text-xs font-bold text-slate-400 mt-2 font-hana">البيانات الإضافية</span>
                         </div>
                         <div class="relative z-10 flex flex-col items-center">
-                            <div id="circle-4" class="w-10 h-10 rounded-full border-2 border-slate-300 bg-white text-slate-500 font-bold flex items-center justify-center">4</div>
+                            <div id="circle-4" class="w-10 h-10 rounded-full border-2 border-slate-300 bg-white text-slate-500 font-bold flex items-center justify-center font-num">4</div>
                             <span id="st-4" class="text-xs font-bold text-slate-400 mt-2 font-hana">المؤهلات والمرفقات</span>
                         </div>
                         <div class="relative z-10 flex flex-col items-center">
-                            <div id="circle-5" class="w-10 h-10 rounded-full border-2 border-slate-300 bg-white text-slate-500 font-bold flex items-center justify-center">5</div>
+                            <div id="circle-5" class="w-10 h-10 rounded-full border-2 border-slate-300 bg-white text-slate-500 font-bold flex items-center justify-center font-num">5</div>
                             <span id="st-5" class="text-xs font-bold text-slate-400 mt-2 font-hana">معلومات الحساب</span>
                         </div>
                     </div>
 
                     <!-- نموذج المرحلة 1: البيانات الشخصية -->
-                    <form id="profile-form-step1" oninput="checkFormValidity()" onchange="checkFormValidity()" class="space-y-6">
+                    <form id="profile-form-step1" oninput="checkFormValidity()" onchange="checkFormValidity()" class="space-y-6 fade-in">
                         <div class="flex items-center gap-2 border-r-4 border-emerald-600 pr-3 mb-6" id="sec-personal-border">
                             <h3 id="sec-personal-title" class="font-hana text-xl font-bold text-slate-900">البيانات الشخصية</h3>
                         </div>
@@ -226,7 +252,7 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                             <div>
                                 <label id="lbl-bdate" class="block text-sm font-bold text-slate-700 mb-2">تاريخ الميلاد <span class="text-red-500">*</span></label>
-                                <input type="date" required class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 outline-none font-thesans text-sm">
+                                <input type="date" required class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 outline-none font-num text-sm">
                             </div>
                             <div>
                                 <label id="lbl-residence" class="block text-sm font-bold text-slate-700 mb-2">ولاية الإقامة <span class="text-red-500">*</span></label>
@@ -247,14 +273,14 @@
                             </div>
                             <div>
                                 <label id="lbl-nin" class="block text-sm font-bold text-slate-700 mb-2">رقم التعريف الوطني (NIN) <span class="text-red-500">*</span></label>
-                                <input type="number" id="input-nin" required placeholder="أدخل رقم التعريف الوطني" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 outline-none font-thesans text-sm">
+                                <input type="number" id="input-nin" required placeholder="أدخل رقم التعريف الوطني" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 outline-none font-num text-sm">
                             </div>
                         </div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                             <div>
                                 <label id="lbl-idnum" class="block text-sm font-bold text-slate-700 mb-2">رقم بطاقة التعريف الوطنية / رخصة السياقة <span class="text-red-500">*</span></label>
-                                <input type="text" id="input-idnum" required placeholder="أدخل رقم الوثيقة" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 outline-none font-thesans text-sm">
+                                <input type="text" id="input-idnum" required placeholder="أدخل رقم الوثيقة" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 outline-none font-num text-sm">
                             </div>
                             <div>
                                 <label id="lbl-bplace" class="block text-sm font-bold text-slate-700 mb-2">مكان الميلاد <span class="text-red-500">*</span></label>
@@ -289,13 +315,13 @@
                         </div>
 
                         <div class="pt-4 border-t border-slate-100">
-                            <label id="lbl-upload-photo" class="block text-sm font-bold text-slate-800 mb-2">الصورة الشخصية (4 × 6) - بصيغة Scanner <span class="text-red-500">*</span></label>
+                            <label id="lbl-upload-photo" class="block text-sm font-bold text-slate-800 mb-2">الصورة الشخصية (<span class="font-num">4 × 6</span>) - بصيغة Scanner <span class="text-red-500">*</span></label>
                             <div class="bg-slate-50 border-2 border-dashed border-slate-300 rounded-2xl p-6 text-center hover:bg-slate-100/80 transition relative">
                                 <input type="file" required id="file-avatar" accept="image/*" onchange="handleAvatarUpload(event)" class="absolute inset-0 opacity-0 cursor-pointer z-10">
                                 <div class="flex flex-col items-center justify-center">
                                     <i class="fa-solid fa-cloud-arrow-up text-3xl text-emerald-600 mb-2"></i>
                                     <p id="lbl-click-avatar" class="text-sm font-bold text-slate-700">اضغط لرفع الصورة الشخصية (Scanner)</p>
-                                    <p id="lbl-limit-photo" class="text-xs text-slate-400 mt-1">PNG, JPG, JPEG — حد أقصى 5 ميجابايت</p>
+                                    <p id="lbl-limit-photo" class="text-xs text-slate-400 mt-1">PNG, JPG, JPEG — حد أقصى <span class="font-num">5</span> ميجابايت</p>
                                     <div id="avatar-preview-container" class="mt-3 flex items-center gap-3 hidden">
                                         <span id="file-avatar-name" class="text-xs font-bold text-emerald-600"></span>
                                         <button type="button" onclick="resetFile('file-avatar')" class="z-20 text-xs bg-red-100 text-red-600 px-3 py-1 rounded-lg font-bold hover:bg-red-200 transition">
@@ -313,7 +339,7 @@
                                 <div class="flex flex-col items-center justify-center">
                                     <i class="fa-solid fa-id-card text-3xl text-emerald-600 mb-2"></i>
                                     <p id="lbl-click-id" class="text-sm font-bold text-slate-700">اضغط لرفع وثيقة الهوية الممسوحة ضوئياً</p>
-                                    <p id="lbl-limit-id" class="text-xs text-slate-400 mt-1">PDF, JPG, PNG — حد أقصى 10 ميجابايت</p>
+                                    <p id="lbl-limit-id" class="text-xs text-slate-400 mt-1">PDF, JPG, PNG — حد أقصى <span class="font-num">10</span> ميجابايت</p>
                                     <div id="identity-preview-container" class="mt-3 flex items-center gap-3 hidden">
                                         <span id="file-identity-name" class="text-xs font-bold text-emerald-600"></span>
                                         <button type="button" onclick="resetFile('file-identity')" class="z-20 text-xs bg-red-100 text-red-600 px-3 py-1 rounded-lg font-bold hover:bg-red-200 transition">
@@ -332,12 +358,12 @@
                     </form>
 
                     <!-- نموذج المرحلة 2: البيانات الأساسية -->
-                    <div id="profile-form-step2" class="hidden space-y-6">
+                    <div id="profile-form-step2" class="hidden space-y-6 fade-in">
                         <div class="flex items-center gap-2 border-r-4 border-emerald-600 pr-3 mb-6">
                             <h3 id="sec-basic-title" class="font-hana text-xl font-bold text-slate-900">البيانات الأساسية</h3>
                         </div>
                         <div class="p-8 bg-slate-50 rounded-2xl border border-slate-200 text-center">
-                            <p id="step2-welcome-text" class="text-slate-700 font-bold text-lg mb-4">تم الانتقال إلى المرحلة 2 بنجاح (البيانات الأساسية)</p>
+                            <p id="step2-welcome-text" class="text-slate-700 font-bold text-lg mb-4">تم الانتقال إلى المرحلة <span class="font-num">2</span> بنجاح (البيانات الأساسية)</p>
                             <button type="button" onclick="nextStep(1)" class="bg-slate-600 text-white px-6 py-2 rounded-xl text-sm font-bold">الرجوع للمرحلة 1</button>
                         </div>
                     </div>
@@ -352,13 +378,13 @@
     <footer class="bg-slate-900 text-slate-400 py-2.5 border-t border-slate-800 w-full fixed bottom-0 left-0 z-50 overflow-hidden shadow-2xl">
         <div class="marquee-container">
             <p class="marquee-content text-xs font-thesans m-0">
-                © <span dir="ltr" class="inline-block font-sans">2027-2028</span> <span id="footer-text">بوابة التسجيل في المنح الدراسية الإقليمية. جميع الحقوق محفوظة.</span>
+                © <span dir="ltr" class="inline-block font-num">2027-2028</span> <span id="footer-text">بوابة التسجيل في المنح الدراسية الإقليمية. جميع الحقوق محفوظة.</span>
             </p>
         </div>
     </footer>
 
     <script>
-        // الولايات باللغات الثلاث
+        // قائمة الولايات المحدثة بأسماء باللغات الثلاث
         const dzWilayasData = {
             ar: [
                 "(01) أدرار", "(02) الشلف", "(03) الأغواط", "(04) أم البواقي", "(05) باتنة", 
@@ -412,12 +438,11 @@
 
         let currentLang = 'ar';
 
-        // ملء الولايات حسب اللغة المختارة
         function populateStates(lang) {
             const selects = document.querySelectorAll('.dz-states-select');
             selects.forEach(select => {
                 const currentVal = select.value;
-                const firstOptText = select.options[0].textContent;
+                const firstOptText = select.options[0] ? select.options[0].textContent : "";
                 select.innerHTML = '';
                 
                 const defaultOpt = document.createElement('option');
@@ -435,33 +460,53 @@
             });
         }
 
-        // تشغيل واجهة التحميل 2 ثانية عند فتح الصفحة أول مرة
+        // تشغيل واجهة التحميل 2 ثانية عند التحميل الأول للصفحة
         window.addEventListener('load', () => {
             populateStates('ar');
+            const loader = document.getElementById('preloader');
             setTimeout(() => {
-                document.getElementById('preloader').style.display = 'none';
+                loader.classList.add('opacity-0');
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                    loader.classList.remove('opacity-0');
+                }, 500);
             }, 2000);
         });
 
-        // الانتقال مع واجهة تحميل 2 ثواني
+        // الانتقال بحركة تحميل تدريجية وظهور تدريجي للواجهات
         function showLoaderAndNavigate(targetStepId) {
             const loader = document.getElementById('preloader');
             loader.style.display = 'flex';
+            loader.classList.remove('opacity-0');
+            
             setTimeout(() => {
-                document.querySelectorAll('.page-step').forEach(step => step.classList.add('hidden'));
-                document.getElementById(targetStepId).classList.remove('hidden');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                loader.style.display = 'none';
+                loader.classList.add('opacity-0');
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                    loader.classList.remove('opacity-0');
+
+                    document.querySelectorAll('.page-step').forEach(step => {
+                        step.classList.add('hidden');
+                        step.classList.remove('fade-in');
+                    });
+                    
+                    const target = document.getElementById(targetStepId);
+                    target.classList.remove('hidden');
+                    target.classList.add('fade-in');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }, 400);
             }, 2000);
         }
 
-        // الانتقال بين خطوات التسجيل (تحديث النسبة 20% لكل مرحلة)
         function nextStep(stepNum) {
             document.getElementById('current-step-num').textContent = stepNum;
             
             if (stepNum === 2) {
                 document.getElementById('profile-form-step1').classList.add('hidden');
-                document.getElementById('profile-form-step2').classList.remove('hidden');
+                const f2 = document.getElementById('profile-form-step2');
+                f2.classList.remove('hidden');
+                f2.classList.add('fade-in');
+
                 document.getElementById('progress-percent').textContent = '20%';
                 document.getElementById('step-progress-bar').style.width = '20%';
                 
@@ -471,7 +516,10 @@
                 document.getElementById('st-2').classList.replace('text-slate-400', 'text-emerald-600');
             } else if (stepNum === 1) {
                 document.getElementById('profile-form-step2').classList.add('hidden');
-                document.getElementById('profile-form-step1').classList.remove('hidden');
+                const f1 = document.getElementById('profile-form-step1');
+                f1.classList.remove('hidden');
+                f1.classList.add('fade-in');
+
                 document.getElementById('progress-percent').textContent = '0%';
                 document.getElementById('step-progress-bar').style.width = '0%';
                 
@@ -535,7 +583,7 @@
             }
         }
 
-        // ترجمة شاملة وتحويل الاتجاه كلياً من اليسار لليمين LTR
+        // ترجمة النصوص كاملة
         const translations = {
             ar: {
                 dir: 'rtl',
@@ -726,7 +774,6 @@
             document.documentElement.dir = data.dir;
             document.documentElement.lang = lang;
 
-            // تغيير حدود العنوان والاتجاه بشكل ممتاز
             const secBorder = document.getElementById('sec-personal-border');
             if (data.dir === 'ltr') {
                 secBorder.classList.remove('border-r-4', 'pr-3');
@@ -796,25 +843,22 @@
 
             document.getElementById('lbl-upload-photo').childNodes[0].nodeValue = data.lblUploadPhoto + ' ';
             document.getElementById('lbl-click-avatar').textContent = data.lblClickAvatar;
-            document.getElementById('lbl-limit-photo').textContent = data.lblLimitPhoto;
-            document.getElementById('lbl-change-photo').textContent = data.lblChangePhoto;
 
             document.getElementById('lbl-upload-id').childNodes[0].nodeValue = data.lblUploadId + ' ';
             document.getElementById('lbl-click-id').textContent = data.lblClickId;
-            document.getElementById('lbl-limit-id').textContent = data.lblLimitId;
-            document.getElementById('lbl-change-id').textContent = data.lblChangeId;
 
             document.getElementById('btn-save-text').textContent = data.btnSaveText;
             document.getElementById('btn-save-icon').className = data.btnSaveIcon;
 
             populateStates(lang);
 
+            // توهج وتحدييد اللغة الحالية فقط
             ['ar', 'fr', 'en'].forEach(l => {
                 const btn = document.getElementById(`lang-${l}`);
                 if (l === lang) {
-                    btn.classList.add('text-emerald-400', 'font-bold');
+                    btn.className = 'transition font-bold text-emerald-400 drop-shadow-[0_0_8px_rgba(52,211,153,0.8)] opacity-100';
                 } else {
-                    btn.classList.remove('text-emerald-400', 'font-bold');
+                    btn.className = 'transition hover:text-emerald-400 opacity-70';
                 }
             });
         }
