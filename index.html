@@ -4,12 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- العنوان الرسمي والوحيد للموقع والمعاينة -->
     <title>بوابة التسجيل في المنح الدراسية الإقليمية</title>
     <meta name="title" content="بوابة التسجيل في المنح الدراسية الإقليمية">
     <meta property="og:title" content="بوابة التسجيل في المنح الدراسية الإقليمية">
-    <meta property="og:site_name" content="بوابة التسجيل في المنح الدراسية الإقليمية">
-    <meta name="twitter:title" content="بوابة التسجيل في المنح الدراسية الإقليمية">
 
     <!-- Tailwind CSS & FontAwesome -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -19,27 +16,25 @@
         @font-face {
             font-family: 'HanaFont';
             src: url('hana.ttf') format('truetype');
-            font-weight: normal;
-            font-style: normal;
         }
 
         @font-face {
             font-family: 'TheSansFont';
             src: url('TheSans-Plain.otf (1).ttf') format('truetype');
-            font-weight: normal;
-            font-style: normal;
         }
 
+        /* توحيد الأرقام اللاتينية 0 1 2 3 */
         body {
             background-color: #f8fafc;
-            font-family: 'HanaFont', sans-serif;
+            font-family: 'HanaFont', system-ui, -apple-system, sans-serif;
+            font-feature-settings: "lnum" 1, "tnum" 1;
             overflow-x: hidden;
         }
 
         .font-hana { font-family: 'HanaFont', sans-serif !important; }
         .font-thesans { font-family: 'TheSansFont', sans-serif !important; }
 
-        /* مؤشر التحميل الوطني */
+        /* مؤشر التحميل */
         .dz-spinner {
             width: 70px;
             height: 70px;
@@ -54,16 +49,6 @@
             animation: spin-dz 1s linear infinite;
         }
 
-        .dz-spinner::after {
-            content: "";
-            position: absolute;
-            top: -4px; left: -4px; right: -4px; bottom: -4px;
-            border-radius: 50%;
-            border: 4px solid transparent;
-            border-left-color: #ffffff;
-            animation: spin-dz 1s linear infinite;
-        }
-
         @keyframes spin-dz {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
@@ -72,157 +57,119 @@
         .preloader-fade-out {
             opacity: 0;
             visibility: hidden;
-            transition: all 0.8s ease-out;
+            transition: all 0.6s ease-out;
+        }
+
+        /* الشعار الرسمي الوطني المظلل */
+        .official-emblem {
+            width: 46 h-46;
+            background: linear-gradient(135deg, #006233 0%, #00331b 100%);
+            border: 2px solid #d4af37;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.2);
         }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800">
 
-    <!-- 1. واجهة التحميل (3 ثوانٍ) -->
+    <!-- 1. واجهة التحميل (بدون لغات) -->
     <div id="preloader" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-white">
         <div class="relative flex flex-col items-center">
-            <div class="dz-spinner mb-8"></div>
-            <p class="font-hana text-2xl font-bold text-black">جاري التحميل</p>
-            <div class="mt-16 flex gap-4 text-xs font-thesans text-slate-400">
-                <span>Français</span>
-                <span>|</span>
-                <span>English</span>
-            </div>
+            <div class="dz-spinner mb-6"></div>
+            <p class="font-hana text-2xl font-bold text-slate-900">جاري التحميل</p>
         </div>
     </div>
 
     <!-- 2. الشريط العلوي (Header) -->
-    <header class="bg-slate-900 text-white shadow-md sticky top-0 z-50">
+    <header class="bg-slate-900 text-white shadow-lg sticky top-0 z-50 border-b border-slate-800">
         <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            
+            <!-- أقصى اليمين: الشعار الرسمي والنص -->
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full bg-emerald-700 flex items-center justify-center text-xl font-bold">
-                    <i class="fa-solid fa-graduation-cap"></i>
+                <div class="w-11 h-11 rounded-full official-emblem flex items-center justify-center text-amber-400 text-xl shadow-md shrink-0">
+                    <i class="fa-solid fa-graduation-cap drop-shadow"></i>
                 </div>
                 <div>
-                    <h1 class="font-hana text-lg font-bold leading-tight">بوابة التسجيل في المنح الدراسية الإقليمية</h1>
+                    <h1 class="font-hana text-base sm:text-lg font-bold leading-tight text-slate-100">بوابة التسجيل في المنح الدراسية الإقليمية</h1>
                     <p class="text-xs text-slate-400 font-thesans">الجمهورية الجزائرية الديمقراطية الشعبية</p>
                 </div>
             </div>
-            <div class="flex items-center gap-3">
-                <button class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm px-4 py-2 rounded-lg font-bold transition">
+
+            <!-- أقصى اليسار: زر التسجيل وتحته قائمة اللغات -->
+            <div class="flex flex-col items-end gap-1.5">
+                <button class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm px-5 py-2 rounded-lg font-bold transition shadow-md border border-emerald-500/30">
                     تسجيل الدخول
                 </button>
+                
+                <!-- خيارات اللغات تحت زر تسجيل الدخول -->
+                <div class="flex items-center gap-2 text-[11px] font-thesans text-slate-400 px-1">
+                    <button class="hover:text-emerald-400 transition font-bold text-emerald-400">العربية</button>
+                    <span>•</span>
+                    <button class="hover:text-emerald-400 transition">Français</button>
+                    <span>•</span>
+                    <button class="hover:text-emerald-400 transition">English</button>
+                </div>
             </div>
+
         </div>
     </header>
 
     <!-- 3. القسم الرئيسي (Hero Section) -->
-    <section class="bg-gradient-to-b from-slate-900 to-slate-800 text-white py-16 px-4 text-center">
+    <section class="bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-white py-14 px-4 text-center border-b border-slate-800">
         <div class="max-w-4xl mx-auto">
-            <span class="bg-emerald-500/20 text-emerald-300 text-xs px-3 py-1 rounded-full font-bold border border-emerald-500/30">الدفعة الجديدة 2026</span>
-            <h2 class="font-hana text-3xl sm:text-4xl font-extrabold mt-4 mb-4 leading-relaxed">
+            <span class="inline-block bg-emerald-500/10 text-emerald-400 text-xs px-4 py-1.5 rounded-full font-bold border border-emerald-500/20 mb-4 shadow-inner">
+                التسجيلات الجامعية خارج الوطن 2027-2028
+            </span>
+            
+            <h2 class="font-hana text-3xl sm:text-5xl font-extrabold mt-2 mb-6 leading-relaxed text-slate-50">
                 الأرضية الرقمية الرسمية للتسجيل في المنح الدراسية
             </h2>
-            <p class="text-slate-300 text-base max-w-2xl mx-auto mb-8 font-thesans">
-                منصة موحدة ومبسطة للطلاب الراغبين في التقديم على المنح الدراسية الإقليمية والدولية.
+            
+            <p class="text-slate-300 text-base sm:text-lg max-w-3xl mx-auto font-thesans leading-relaxed">
+                المنصة الموحدة للطلاب الراغبين في التقديم على المنح الدراسية الإقليمية والدولية
             </p>
+        </div>
+    </section>
 
-            <div class="bg-white p-2 rounded-xl shadow-lg flex flex-col sm:flex-row gap-2 max-w-2xl mx-auto">
-                <input type="text" placeholder="ابحث عن التخصص أو الدولة..." class="w-full px-4 py-3 text-slate-800 rounded-lg focus:outline-none font-thesans">
-                <button class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-3 rounded-lg transition shrink-0">
-                    بحث سريع
-                </button>
+    <!-- 4. واجهة دعوة التسجيل الرسمية (بدلاً من استمارة البيانات والأقسام الملتغاة) -->
+    <section class="max-w-4xl mx-auto px-4 py-20 text-center">
+        <div class="bg-white p-10 sm:p-14 rounded-3xl shadow-xl border border-slate-200/80 relative overflow-hidden">
+            <!-- خلفية فخمة خفيفة -->
+            <div class="absolute -top-24 -right-24 w-48 h-48 bg-emerald-50 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-24 -left-24 w-48 h-48 bg-blue-50 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="relative z-10 max-w-2xl mx-auto">
+                <div class="w-16 h-16 bg-emerald-100 text-emerald-700 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-6 shadow-inner">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </div>
+
+                <h3 class="font-hana text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4 leading-snug">
+                    ما الذي تنتظره! قم بالتسجيل الآن
+                </h3>
+                
+                <p class="text-lg sm:text-xl font-bold text-emerald-600 font-thesans mb-10">
+                    ملايين المنح تنتظرك في الخارج
+                </p>
+
+                <!-- زر رسمي بمرتبة كلاسيكية وفخمة -->
+                <a href="#register" class="inline-flex items-center justify-center gap-3 bg-gradient-to-r from-emerald-700 to-emerald-600 hover:from-emerald-800 hover:to-emerald-700 text-white font-hana font-bold text-xl px-12 py-4 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all border border-emerald-500/30">
+                    <span>التسجيل الآن</span>
+                    <i class="fa-solid fa-arrow-left text-base"></i>
+                </a>
             </div>
         </div>
     </section>
 
-    <!-- 4. بطاقات الأقسام والخدمات -->
-    <section class="max-w-7xl mx-auto px-4 py-12">
-        <h3 class="text-xl font-bold mb-6 text-slate-800 border-r-4 border-emerald-600 pr-3">خدمات المنصة</h3>
-        
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition">
-                <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center text-xl mb-4">
-                    <i class="fa-solid fa-file-signature"></i>
-                </div>
-                <h4 class="font-bold text-lg mb-2">التسجيل الأولـي</h4>
-                <p class="text-sm text-slate-500 font-thesans mb-4">ملء استمارة طلب المنحة وتأكيد المعلومات الشخصية والأكاديمية.</p>
-                <a href="#apply-form" class="text-blue-600 text-sm font-bold flex items-center gap-1 hover:gap-2 transition">قدّم الآن <i class="fa-solid fa-arrow-left"></i></a>
-            </div>
-
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition">
-                <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center text-xl mb-4">
-                    <i class="fa-solid fa-passport"></i>
-                </div>
-                <h4 class="font-bold text-lg mb-2">دليل المنح المتاحة</h4>
-                <p class="text-sm text-slate-500 font-thesans mb-4">استعراض الشروط والوثائق المطلوبة لكل دولة وتخصص دراسي.</p>
-                <a href="#" class="text-emerald-600 text-sm font-bold flex items-center gap-1 hover:gap-2 transition">استكشف المنح <i class="fa-solid fa-arrow-left"></i></a>
-            </div>
-
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition">
-                <div class="w-12 h-12 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center text-xl mb-4">
-                    <i class="fa-solid fa-chart-line"></i>
-                </div>
-                <h4 class="font-bold text-lg mb-2">متابعة الطلب</h4>
-                <p class="text-sm text-slate-500 font-thesans mb-4">الاستعلام عن حالة الملف والنتائج باستخدام الرقم الوطني.</p>
-                <a href="#" class="text-purple-600 text-sm font-bold flex items-center gap-1 hover:gap-2 transition">متابعة الملف <i class="fa-solid fa-arrow-left"></i></a>
-            </div>
-        </div>
-    </section>
-
-    <!-- 5. استمارة التسجيل السريع -->
-    <section id="apply-form" class="max-w-4xl mx-auto px-4 py-8 mb-16">
-        <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
-            <h3 class="text-2xl font-bold mb-2 text-slate-800 text-center">استمارة التقديم</h3>
-            <p class="text-center text-sm text-slate-500 mb-8 font-thesans">يرجى إدخال البيانات بدقة وفقاً للوثائق الرسمية</p>
-
-            <form class="space-y-4">
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-1">الاسم</label>
-                        <input type="text" class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:outline-none font-thesans">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-1">اللقب</label>
-                        <input type="text" class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:outline-none font-thesans">
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-1">البريد الإلكتروني</label>
-                        <input type="email" class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:outline-none font-thesans">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-1">رقم الهاتف</label>
-                        <input type="tel" class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:outline-none font-thesans">
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-sm font-bold text-slate-700 mb-1">المستوى الدراسي الحالي</label>
-                    <select class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:outline-none font-thesans">
-                        <option>بكالوريا (ثانوي)</option>
-                        <option>ليسانس</option>
-                        <option>ماستر</option>
-                        <option>دكتوراه</option>
-                    </select>
-                </div>
-
-                <button type="button" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-lg shadow transition mt-4">
-                    إرسال الطلب
-                </button>
-            </form>
-        </div>
-    </section>
-
-    <!-- 6. التذييل (Footer) -->
+    <!-- 5. التذييل (Footer) -->
     <footer class="bg-slate-900 text-slate-400 py-6 text-center text-xs font-thesans border-t border-slate-800">
-        <p>© 2026 بوابة التسجيل في المنح الدراسية الإقليمية. جميع الحقوق محفوظة.</p>
+        <p>© 2027-2028 بوابة التسجيل في المنح الدراسية الإقليمية. جميع الحقوق محفوظة.</p>
     </footer>
 
-    <!-- JavaScript لتأخير 3 ثوانٍ -->
     <script>
         window.addEventListener('load', function() {
             setTimeout(function() {
                 const preloader = document.getElementById('preloader');
                 preloader.classList.add('preloader-fade-out');
-            }, 3000); 
+            }, 2500); 
         });
     </script>
 </body>
