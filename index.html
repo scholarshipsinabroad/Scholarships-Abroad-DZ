@@ -3,11 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="doc-title">إعداد الملف الشخصي - الخطوة 1 من 5</title>
     
-    <title id="doc-title">بوابة التسجيل في المنح الدراسية الإقليمية</title>
-    <meta name="title" content="بوابة التسجيل في المنح الدراسية الإقليمية">
-    <meta property="og:title" content="بوابة التسجيل في المنح الدراسية الإقليمية">
-
     <!-- Tailwind CSS & FontAwesome -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -17,7 +14,6 @@
             font-family: 'HanaFont';
             src: url('hana.ttf') format('truetype');
         }
-
         @font-face {
             font-family: 'TheSansFont';
             src: url('TheSans-Plain.otf (1).ttf') format('truetype');
@@ -32,7 +28,6 @@
         .font-hana { font-family: 'HanaFont', sans-serif !important; }
         .font-thesans { font-family: 'TheSansFont', sans-serif !important; }
 
-        /* مؤشر التحميل */
         .dz-spinner {
             width: 70px;
             height: 70px;
@@ -52,21 +47,22 @@
             100% { transform: rotate(360deg); }
         }
 
-        .preloader-fade-out {
+        .preloader-hidden {
             opacity: 0;
             visibility: hidden;
-            transition: all 0.6s ease-out;
+            transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+        }
+        .preloader-visible {
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.2s ease-in;
         }
 
-        /* دمج الشعار بالكامل وإلغاء أي حدود */
         .seamless-logo-container {
             display: flex;
             align-items: center;
             justify-content: center;
             background: transparent;
-            border: none !important;
-            outline: none !important;
-            box-shadow: none !important;
         }
 
         .seamless-logo-img {
@@ -74,16 +70,12 @@
             width: auto;
             object-fit: contain;
             mix-blend-mode: lighten;
-            border: none !important;
-            outline: none !important;
         }
 
-        /* شريط حقوق متحرك من اليسار إلى اليمين */
         .marquee-container {
             width: 100%;
             overflow: hidden;
             white-space: nowrap;
-            position: relative;
         }
 
         .marquee-content {
@@ -93,31 +85,36 @@
         }
 
         @keyframes marquee-ltr {
-            0% {
-                transform: translateX(-100%);
-            }
-            100% {
-                transform: translateX(0%);
-            }
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(0%); }
+        }
+
+        /* زر الإرسال المتوهج عند الاكتمال */
+        .btn-glow {
+            animation: glow-pulse 1.5s infinite alternate;
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.6);
+        }
+
+        @keyframes glow-pulse {
+            0% { box-shadow: 0 0 8px rgba(16, 185, 129, 0.4); }
+            100% { box-shadow: 0 0 22px rgba(16, 185, 129, 0.9); }
         }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
+<body class="bg-slate-100 text-slate-800 flex flex-col min-h-screen pb-12">
 
-    <!-- 1. واجهة التحميل -->
-    <div id="preloader" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-white">
+    <!-- 1. شاشة التحميل -->
+    <div id="preloader" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-white preloader-hidden">
         <div class="relative flex flex-col items-center">
             <div class="dz-spinner mb-6"></div>
             <p id="loader-text" class="font-hana text-2xl font-bold text-slate-900">جاري التحميل</p>
         </div>
     </div>
 
-    <!-- 2. الشريط العلوي (Header) -->
+    <!-- 2. الشريط العلوي الدائم -->
     <header class="bg-slate-900 text-white shadow-lg sticky top-0 z-50 border-b border-slate-800">
         <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-            
-            <!-- أقصى اليمين: الشعار مندمج كلياً -->
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="navigateTo('step-home')">
                 <div class="seamless-logo-container">
                     <img src="IMG_20260825_032939.png" alt="شعار المنصة" class="seamless-logo-img">
                 </div>
@@ -127,12 +124,10 @@
                 </div>
             </div>
 
-            <!-- أقصى اليسار: زر التسجيل وتحته قائمة اللغات التفاعلية -->
             <div class="flex flex-col items-end gap-1.5">
-                <button id="btn-login" class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm px-5 py-2 rounded-lg font-bold transition shadow-md border border-emerald-500/30">
+                <button id="btn-login" onclick="navigateTo('step-profile')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm px-5 py-2 rounded-lg font-bold transition shadow-md border border-emerald-500/30">
                     تسجيل الدخول
                 </button>
-                
                 <div class="flex items-center gap-2 text-[11px] font-thesans text-slate-400 px-1">
                     <button onclick="changeLanguage('ar')" id="lang-ar" class="hover:text-emerald-400 transition font-bold text-emerald-400">العربية</button>
                     <span>•</span>
@@ -141,60 +136,247 @@
                     <button onclick="changeLanguage('en')" id="lang-en" class="hover:text-emerald-400 transition">English</button>
                 </div>
             </div>
-
         </div>
     </header>
 
-    <!-- المحتوى الرئيسي للموقع -->
+    <!-- المحتوى الرئيسي -->
     <main class="flex-grow">
-        <!-- 3. القسم الرئيسي (Hero Section) -->
-        <section class="bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-white py-14 px-4 text-center border-b border-slate-800">
-            <div class="max-w-4xl mx-auto">
-                <span class="inline-block bg-emerald-500/10 text-emerald-400 text-xs px-4 py-1.5 rounded-full font-bold border border-emerald-500/20 mb-4 shadow-inner">
-                    <span id="hero-badge-prefix">التسجيلات الجامعية خارج الوطن</span> 
-                    <span dir="ltr" class="inline-block tracking-wider font-sans">&#8206;2027-2028&#8206;</span>
-                </span>
-                
-                <h2 id="hero-title" class="font-hana text-3xl sm:text-5xl font-extrabold mt-2 mb-6 leading-relaxed text-slate-50">
-                    الأرضية الرقمية الرسمية للتسجيل في المنح الدراسية
-                </h2>
-                
-                <p id="hero-desc" class="text-slate-300 text-base sm:text-lg max-w-3xl mx-auto font-thesans leading-relaxed">
-                    المنصة الموحدة للطلاب الراغبين في التقديم على المنح الدراسية الإقليمية والدولية
-                </p>
-            </div>
-        </section>
-
-        <!-- 4. واجهة دعوة التسجيل الرسمية -->
-        <section class="max-w-4xl mx-auto px-4 py-16 text-center">
-            <div class="bg-white p-10 sm:p-14 rounded-3xl shadow-xl border border-slate-200/80 relative overflow-hidden">
-                <div class="absolute -top-24 -right-24 w-48 h-48 bg-emerald-50 rounded-full blur-3xl pointer-events-none"></div>
-                <div class="absolute -bottom-24 -left-24 w-48 h-48 bg-blue-50 rounded-full blur-3xl pointer-events-none"></div>
-
-                <div class="relative z-10 max-w-2xl mx-auto">
-                    <div class="w-16 h-16 bg-emerald-100 text-emerald-700 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-6 shadow-inner">
-                        <i class="fa-solid fa-paper-plane"></i>
-                    </div>
-
-                    <h3 id="cta-title" class="font-hana text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4 leading-snug">
-                        ما الذي تنتظره! قم بالتسجيل الآن
-                    </h3>
-                    
-                    <p id="cta-subtitle" class="text-lg sm:text-xl font-bold text-emerald-600 font-thesans mb-10">
-                        ملايين المنح تنتظرك في الخارج
+        
+        <!-- الصفحة الرئيسية -->
+        <div id="step-home" class="page-step hidden">
+            <section class="bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-white py-14 px-4 text-center border-b border-slate-800">
+                <div class="max-w-4xl mx-auto">
+                    <span class="inline-block bg-emerald-500/10 text-emerald-400 text-xs px-4 py-1.5 rounded-full font-bold border border-emerald-500/20 mb-4 shadow-inner">
+                        <span id="hero-badge-prefix">التسجيلات الجامعية خارج الوطن</span> 
+                        <span dir="ltr" class="inline-block tracking-wider font-sans">&#8206;2027-2028&#8206;</span>
+                    </span>
+                    <h2 id="hero-title" class="font-hana text-3xl sm:text-5xl font-extrabold mt-2 mb-6 leading-relaxed text-slate-50">
+                        الأرضية الرقمية الرسمية للتسجيل في المنح الدراسية
+                    </h2>
+                    <p id="hero-desc" class="text-slate-300 text-base sm:text-lg max-w-3xl mx-auto font-thesans leading-relaxed">
+                        المنصة الموحدة للطلاب الراغبين في التقديم على المنح الدراسية الإقليمية والدولية
                     </p>
+                </div>
+            </section>
 
-                    <a href="#register" class="inline-flex items-center justify-center gap-3 bg-gradient-to-r from-emerald-700 to-emerald-600 hover:from-emerald-800 hover:to-emerald-700 text-white font-hana font-bold text-xl px-12 py-4 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all border border-emerald-500/30">
-                        <span id="btn-register">التسجيل الآن</span>
-                        <i id="btn-icon" class="fa-solid fa-arrow-left text-base"></i>
-                    </a>
+            <section class="max-w-4xl mx-auto px-4 py-16 text-center">
+                <div class="bg-white p-10 sm:p-14 rounded-3xl shadow-xl border border-slate-200/80 relative overflow-hidden">
+                    <div class="relative z-10 max-w-2xl mx-auto">
+                        <div class="w-16 h-16 bg-emerald-100 text-emerald-700 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-6 shadow-inner">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </div>
+                        <h3 id="cta-title" class="font-hana text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4 leading-snug">
+                            ما الذي تنتظره! قم بالتسجيل الآن
+                        </h3>
+                        <p id="cta-subtitle" class="text-lg sm:text-xl font-bold text-emerald-600 font-thesans mb-10">
+                            ملايين المنح تنتظرك في الخارج
+                        </p>
+                        <button onclick="navigateTo('step-profile')" class="inline-flex items-center justify-center gap-3 bg-gradient-to-r from-emerald-700 to-emerald-600 hover:from-emerald-800 hover:to-emerald-700 text-white font-hana font-bold text-xl px-12 py-4 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all border border-emerald-500/30">
+                            <span id="btn-register">التسجيل الآن</span>
+                            <i id="btn-icon" class="fa-solid fa-arrow-left text-base"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- واجهة إعداد الملف الشخصي (5 مراحل) -->
+        <div id="step-profile" class="page-step">
+            
+            <!-- الهيدر الأخضر والبطاقة السفلية للتقدم -->
+            <div class="bg-teal-900 text-white pt-8 pb-20 px-4 relative">
+                <div class="max-w-4xl mx-auto flex justify-between items-center mb-6">
+                    <div>
+                        <h2 class="text-2xl font-bold font-hana">إعداد الملف الشخصي</h2>
+                        <p class="text-sm text-teal-200 font-thesans mt-1">الخطوة <span id="current-step-num">1</span> من 5</p>
+                    </div>
+                </div>
+
+                <!-- الشريط الملخص للتسجيل والحساب -->
+                <div class="max-w-4xl mx-auto bg-white text-slate-800 rounded-2xl shadow-lg p-4 flex items-center justify-between absolute left-1/2 -translate-x-1/2 -bottom-10 w-[92%] border border-slate-100">
+                    <div class="flex items-center gap-4">
+                        <div class="relative">
+                            <img id="user-avatar" src="https://ui-avatars.com/api/?name=User&background=0D9488&color=fff" class="w-14 h-14 rounded-full object-cover border-2 border-emerald-500 shadow-sm" alt="المستخدم">
+                            <span class="absolute bottom-0 right-0 bg-emerald-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full" id="progress-percent">0%</span>
+                        </div>
+                        <div>
+                            <h4 id="display-user-name" class="font-bold text-slate-900 text-base">لم يتم إدخال الاسم بعد</h4>
+                            <p id="display-user-email" class="text-xs text-slate-400 font-thesans">البريد سيظهر في الخطوة الأخيرة</p>
+                        </div>
+                    </div>
+                    <button class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:bg-slate-200">
+                        <i class="fa-solid fa-chevron-down text-xs"></i>
+                    </button>
                 </div>
             </div>
-        </section>
+
+            <!-- محتوى نموذج الإدخال والشريط الرئيسي للمراحل -->
+            <div class="max-w-4xl mx-auto px-4 pt-16 pb-12">
+                <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 sm:p-10">
+                    
+                    <!-- شريط المراحل الخمس 1 إلى 5 -->
+                    <div class="relative flex justify-between items-center mb-10 max-w-3xl mx-auto">
+                        <div class="absolute top-1/2 left-0 right-0 h-0.5 bg-slate-200 -translate-y-1/2 z-0"></div>
+                        <div id="step-progress-bar" class="absolute top-1/2 right-0 h-0.5 bg-emerald-500 -translate-y-1/2 z-0 transition-all duration-500" style="width: 0%;"></div>
+                        
+                        <!-- مرحلة 1 -->
+                        <div class="relative z-10 flex flex-col items-center">
+                            <div id="circle-1" class="w-10 h-10 rounded-full border-2 border-emerald-600 bg-emerald-600 text-white font-bold flex items-center justify-center shadow">1</div>
+                            <span class="text-xs font-bold text-emerald-600 mt-2 font-hana">البيانات الشخصية</span>
+                        </div>
+                        <!-- مرحلة 2 -->
+                        <div class="relative z-10 flex flex-col items-center">
+                            <div id="circle-2" class="w-10 h-10 rounded-full border-2 border-slate-300 bg-white text-slate-500 font-bold flex items-center justify-center">2</div>
+                            <span class="text-xs font-bold text-slate-400 mt-2 font-hana">البيانات الأساسية</span>
+                        </div>
+                        <!-- مرحلة 3 -->
+                        <div class="relative z-10 flex flex-col items-center">
+                            <div id="circle-3" class="w-10 h-10 rounded-full border-2 border-slate-300 bg-white text-slate-500 font-bold flex items-center justify-center">3</div>
+                            <span class="text-xs font-bold text-slate-400 mt-2 font-hana">البيانات الإضافية</span>
+                        </div>
+                        <!-- مرحلة 4 -->
+                        <div class="relative z-10 flex flex-col items-center">
+                            <div id="circle-4" class="w-10 h-10 rounded-full border-2 border-slate-300 bg-white text-slate-500 font-bold flex items-center justify-center">4</div>
+                            <span class="text-xs font-bold text-slate-400 mt-2 font-hana">المؤهلات والمرفقات</span>
+                        </div>
+                        <!-- مرحلة 5 -->
+                        <div class="relative z-10 flex flex-col items-center">
+                            <div id="circle-5" class="w-10 h-10 rounded-full border-2 border-slate-300 bg-white text-slate-500 font-bold flex items-center justify-center">5</div>
+                            <span class="text-xs font-bold text-slate-400 mt-2 font-hana">معلومات الحساب</span>
+                        </div>
+                    </div>
+
+                    <!-- نموذج المرحلة الأولى: البيانات الشخصية -->
+                    <form id="profile-form-step1" oninput="checkFormValidity()" onchange="checkFormValidity()" class="space-y-6">
+                        <div class="flex items-center gap-2 border-r-4 border-emerald-600 pr-3 mb-6">
+                            <h3 class="font-hana text-xl font-bold text-slate-900">البيانات الشخصية</h3>
+                        </div>
+
+                        <!-- الصف 1: الإسم واللقب -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700 mb-2">الإسم <span class="text-red-500">*</span></label>
+                                <input type="text" id="input-first-name" required oninput="updateProgressDetails()" placeholder="أدخل إسمك" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 outline-none font-thesans text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700 mb-2">اللقب <span class="text-red-500">*</span></label>
+                                <input type="text" id="input-last-name" required oninput="updateProgressDetails()" placeholder="أدخل لقبك" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 outline-none font-thesans text-sm">
+                            </div>
+                        </div>
+
+                        <!-- الصف 2: تاريخ الميلاد ومكان الإقامة الحالي -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700 mb-2">تاريخ الميلاد <span class="text-red-500">*</span></label>
+                                <input type="date" required class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 outline-none font-thesans text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700 mb-2">مكان الإقامة الحالي (الولاية) <span class="text-red-500">*</span></label>
+                                <select id="select-residence-state" required class="dz-states-select w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 outline-none font-thesans text-sm bg-white">
+                                    <option value="">اختر الولاية (69 ولاية)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- الصف 3: نوع الهوية ورقم التعريف الوطني -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700 mb-2">نوع الهوية <span class="text-red-500">*</span></label>
+                                <select required class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 outline-none font-thesans text-sm bg-white">
+                                    <option value="">اختر نوع الهوية</option>
+                                    <option value="cin">بطاقة التعريف الوطنية</option>
+                                    <option value="license">رخصة السياقة</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700 mb-2">رقم التعريف الوطني (NIN) <span class="text-red-500">*</span></label>
+                                <input type="number" required placeholder="أدخل رقم التعريف الوطني" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 outline-none font-thesans text-sm">
+                            </div>
+                        </div>
+
+                        <!-- الصف 4: رقم بطاقة التعريف أو الرخصة ومكان الميلاد -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700 mb-2">رقم بطاقة التعريف الوطنية / رخصة السياقة <span class="text-red-500">*</span></label>
+                                <input type="text" required placeholder="أدخل رقم الوثيقة" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 outline-none font-thesans text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700 mb-2">مكان الميلاد (الولاية) <span class="text-red-500">*</span></label>
+                                <select id="select-birth-state" required class="dz-states-select w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 outline-none font-thesans text-sm bg-white">
+                                    <option value="">اختر ولاية الميلاد</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- الصف 5: الحالة الاجتماعية والحالة الصحية -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700 mb-2">الحالة الاجتماعية <span class="text-red-500">*</span></label>
+                                <select required class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 outline-none font-thesans text-sm bg-white">
+                                    <option value="">اختر الحالة الاجتماعية</option>
+                                    <option value="single">أعزب / عزباء</option>
+                                    <option value="married">متزوج / متزوجة</option>
+                                    <option value="divorced">مطلق / مطلقة</option>
+                                    <option value="widowed">أرمل / أرملة</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700 mb-2">حالة الإعاقة <span class="text-red-500">*</span></label>
+                                <div class="flex items-center gap-6 py-2.5">
+                                    <label class="flex items-center gap-2 cursor-pointer font-thesans text-sm">
+                                        <input type="radio" name="disability" value="no" checked class="text-emerald-600 focus:ring-emerald-500"> لا يوجد
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer font-thesans text-sm">
+                                        <input type="radio" name="disability" value="yes" class="text-emerald-600 focus:ring-emerald-500"> يوجد
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- قسم رفع الصورة الشخصية 4x6 (Scanner) -->
+                        <div class="pt-4 border-t border-slate-100">
+                            <label class="block text-sm font-bold text-slate-800 mb-2">الصورة الشخصية (4 × 6) - بصيغة Scanner <span class="text-red-500">*</span></label>
+                            <div class="bg-slate-50 border-2 border-dashed border-slate-300 rounded-2xl p-6 text-center hover:bg-slate-100/80 transition relative cursor-pointer">
+                                <input type="file" required id="file-avatar" accept="image/*" onchange="handleAvatarUpload(event)" class="absolute inset-0 opacity-0 cursor-pointer">
+                                <div class="flex flex-col items-center justify-center">
+                                    <i class="fa-solid fa-cloud-arrow-up text-3xl text-emerald-600 mb-2"></i>
+                                    <p class="text-sm font-bold text-slate-700">اضغط لرفع الصورة الشخصية (Scanner)</p>
+                                    <p class="text-xs text-slate-400 mt-1">PNG, JPG, JPEG — حد أقصى 5 ميجابايت</p>
+                                    <span id="file-avatar-name" class="text-xs font-bold text-emerald-600 mt-2"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- قسم رفع بطاقة التعريف الوطنية / رخصة السياقة -->
+                        <div class="pt-4">
+                            <label class="block text-sm font-bold text-slate-800 mb-2">رفع بطاقة التعريف الوطنية / رخصة السياقة <span class="text-red-500">*</span></label>
+                            <div class="bg-slate-50 border-2 border-dashed border-slate-300 rounded-2xl p-6 text-center hover:bg-slate-100/80 transition relative cursor-pointer">
+                                <input type="file" required id="file-identity" accept="image/*,.pdf" onchange="handleIdentityUpload(event)" class="absolute inset-0 opacity-0 cursor-pointer">
+                                <div class="flex flex-col items-center justify-center">
+                                    <i class="fa-solid fa-id-card text-3xl text-emerald-600 mb-2"></i>
+                                    <p class="text-sm font-bold text-slate-700">اضغط لرفع وثيقة الهوية الممسوحة ضوئياً</p>
+                                    <p class="text-xs text-slate-400 mt-1">PDF, JPG, PNG — حد أقصى 10 ميجابايت</p>
+                                    <span id="file-identity-name" class="text-xs font-bold text-emerald-600 mt-2"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- زر الحفظ والمتابعة (يتوهج عند تكميل الحقول) -->
+                        <div class="pt-6 flex justify-end">
+                            <button type="button" id="btn-save-step1" onclick="navigateTo('step-home')" class="bg-slate-400 text-white font-hana font-bold text-lg px-10 py-3.5 rounded-xl shadow transition-all duration-300 cursor-not-allowed">
+                                الحفظ والمتابعة <i class="fa-solid fa-arrow-left mr-2"></i>
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
     </main>
 
-    <!-- 5. الشريط الأسفل (Footer) مع نص متحرك من اليسار إلى اليمين -->
-    <footer class="bg-slate-900 text-slate-400 py-3 border-t border-slate-800 w-full mt-auto overflow-hidden">
+    <!-- 3. الشريط الأسفل الدائم -->
+    <footer class="bg-slate-900 text-slate-400 py-2.5 border-t border-slate-800 w-full fixed bottom-0 left-0 z-50 overflow-hidden shadow-2xl">
         <div class="marquee-container">
             <p class="marquee-content text-xs font-thesans m-0">
                 © <span dir="ltr" class="inline-block font-sans">&#8206;2027-2028&#8206;</span> <span id="footer-text">بوابة التسجيل في المنح الدراسية الإقليمية. جميع الحقوق محفوظة.</span>
@@ -202,19 +384,122 @@
         </div>
     </footer>
 
-    <!-- نظام الترجمة والتحكم -->
+    <!-- البرمجيات وإدارة الحقول والولايات 69 -->
     <script>
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                const preloader = document.getElementById('preloader');
-                if(preloader) preloader.classList.add('preloader-fade-out');
-            }, 2000); 
+        const dzWilayas = [
+            "01 - أدرار", "02 - الشلف", "03 - الأغواط", "04 - أم البواقي", "05 - باتنة", 
+            "06 - بجاية", "07 - بسكرة", "08 - بشار", "09 - البليدة", "10 - البويرة", 
+            "11 - تمنراست", "12 - تبسة", "13 - تلمسان", "14 - تيارت", "15 - تيزي وزو", 
+            "16 - الجزائر", "17 - الجلفة", "18 - جيجل", "19 - سطيف", "20 - سعيدة", 
+            "21 - سكيكدة", "22 - سيدي بلعباس", "23 - عنابة", "24 - قالمة", "25 - قسنطينة", 
+            "26 - مدية", "27 - مستغانم", "28 - المسيلة", "29 - معسكر", "30 - ورقلة", 
+            "31 - وهران", "32 - البيض", "33 - إليزي", "34 - برج بوعريريج", "35 - بومرداس", 
+            "36 - الطارف", "37 - تندوف", "38 - تسمسيلت", "39 - الوادي", "40 - خنشلة", 
+            "41 - سوق أهراس", "42 - تيبازة", "43 - ميلة", "44 - عين الدفلى", "45 - النعامة", 
+            "46 - عين تموشنت", "47 - غرداية", "48 - غليزان", "49 - تيميمون", "50 - برج باجي مختار", 
+            "51 - أولاد جلال", "52 - بني عباس", "53 - إن صالح", "54 - إن قزام", "55 - تقرت", 
+            "56 - جانيت", "57 - المغير", "58 - المنيعة", "59 - آفلو", "60 - بريكة", 
+            "61 - قصر البخاري", "62 - مسعد", "63 - عين وسارة", "64 - بوسعادة", "65 - شلغوم العيد", 
+            "66 - بوقطب", "67 - العريشة", "68 - الكرارمة", "69 - عين الصفراء"
+        ];
+
+        // تعبئة كافة الولايات 69 تلقائياً في القوائم
+        document.addEventListener("DOMContentLoaded", () => {
+            const selects = document.querySelectorAll('.dz-states-select');
+            selects.forEach(select => {
+                dzWilayas.forEach(wilaya => {
+                    const opt = document.createElement('option');
+                    opt.value = wilaya;
+                    opt.textContent = wilaya;
+                    select.appendChild(opt);
+                });
+            });
         });
 
+        // تحديث شريط وتفاصيل الملف تدريجياً
+        function updateProgressDetails() {
+            const firstName = document.getElementById('input-first-name').value;
+            const lastName = document.getElementById('input-last-name').value;
+            const displayName = document.getElementById('display-user-name');
+
+            if (firstName || lastName) {
+                displayName.textContent = `${firstName} ${lastName}`.trim();
+            } else {
+                displayName.textContent = 'لم يتم إدخال الاسم بعد';
+            }
+        }
+
+        function handleAvatarUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                document.getElementById('file-avatar-name').textContent = `تم تحميل: ${file.name}`;
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('user-avatar').src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+            checkFormValidity();
+        }
+
+        function handleIdentityUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                document.getElementById('file-identity-name').textContent = `تم تحميل الوثيقة: ${file.name}`;
+            }
+            checkFormValidity();
+        }
+
+        // التحقق من اكتمال الشروط لتفعيل الزر المتوهج
+        function checkFormValidity() {
+            const form = document.getElementById('profile-form-step1');
+            const btn = document.getElementById('btn-save-step1');
+            const percentLabel = document.getElementById('progress-percent');
+            const progressBar = document.getElementById('step-progress-bar');
+
+            if (form.checkValidity()) {
+                btn.classList.remove('bg-slate-400', 'cursor-not-allowed');
+                btn.classList.add('bg-emerald-600', 'hover:bg-emerald-700', 'btn-glow');
+                btn.disabled = false;
+                percentLabel.textContent = '20%';
+                progressBar.style.width = '20%';
+            } else {
+                btn.classList.add('bg-slate-400', 'cursor-not-allowed');
+                btn.classList.remove('bg-emerald-600', 'hover:bg-emerald-700', 'btn-glow');
+                btn.disabled = true;
+                percentLabel.textContent = '5%';
+                progressBar.style.width = '5%';
+            }
+        }
+
+        // إدارة التنقل لشاشة التحميل (1.5 ثانية)
+        const preloader = document.getElementById('preloader');
+
+        function navigateTo(targetStepId) {
+            preloader.classList.remove('preloader-hidden');
+            preloader.classList.add('preloader-visible');
+
+            setTimeout(() => {
+                const steps = document.querySelectorAll('.page-step');
+                steps.forEach(step => step.classList.add('hidden'));
+
+                const targetStep = document.getElementById(targetStepId);
+                if (targetStep) {
+                    targetStep.classList.remove('hidden');
+                }
+
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                preloader.classList.remove('preloader-visible');
+                preloader.classList.add('preloader-hidden');
+            }, 1500);
+        }
+
+        // نظام اللغات والترجمة
         const translations = {
             ar: {
                 dir: 'rtl',
-                docTitle: 'بوابة التسجيل في المنح الدراسية الإقليمية',
+                docTitle: 'إعداد الملف الشخصي - الخطوة 1 من 5',
                 loaderText: 'جاري التحميل',
                 navTitle: 'بوابة التسجيل في المنح الدراسية الإقليمية',
                 navSubtitle: 'الجمهورية الجزائرية الديمقراطية الشعبية',
@@ -230,7 +515,7 @@
             },
             fr: {
                 dir: 'ltr',
-                docTitle: 'Portail d\'inscription aux bourses régionales',
+                docTitle: 'Configuration du profil - Étape 1 sur 5',
                 loaderText: 'Chargement en cours...',
                 navTitle: 'Portail d\'inscription aux bourses régionales',
                 navSubtitle: 'République Algérienne Démocratique et Populaire',
@@ -246,7 +531,7 @@
             },
             en: {
                 dir: 'ltr',
-                docTitle: 'Regional Scholarships Registration Portal',
+                docTitle: 'Profile Setup - Step 1 of 5',
                 loaderText: 'Loading...',
                 navTitle: 'Regional Scholarships Registration Portal',
                 navSubtitle: 'People\'s Democratic Republic of Algeria',
