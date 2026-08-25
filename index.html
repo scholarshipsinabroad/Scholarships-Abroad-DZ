@@ -58,7 +58,7 @@
             transition: all 0.6s ease-out;
         }
 
-        /* دمج الشعار بدون إطار نهائياً مع ظل خفيف على الأطراف */
+        /* دمج الشعار الجديد بدون إطار مع تظليل حواف ناعم ورسمي */
         .merged-logo-wrapper {
             position: relative;
             display: flex;
@@ -71,8 +71,8 @@
             height: 52px;
             width: auto;
             object-fit: contain;
-            /* ظل ناعم حول حدود تصميم الشعار نفسه لمنحه مظهر دمج احترافي */
-            filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.6));
+            /* ظل محيطي ناعم لإبراز تفاصيل الشعار فوق الهيدر المظلم */
+            filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.65));
             border: none !important;
             outline: none !important;
         }
@@ -92,10 +92,10 @@
     <header class="bg-slate-900 text-white shadow-lg sticky top-0 z-50 border-b border-slate-800">
         <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
             
-            <!-- أقصى اليمين: الشعار مندمج بدون أي إطار إطلاقاً -->
+            <!-- أقصى اليمين: الشعار الجديد مندمج بتظليل راقي بدون إطار -->
             <div class="flex items-center gap-3">
                 <div class="merged-logo-wrapper">
-                    <img src="IMG_20260825_014458.png" alt="شعار المنصة" class="merged-logo-img">
+                    <img src="IMG_20260825_032939.png" alt="شعار المنصة" class="merged-logo-img">
                 </div>
                 <div>
                     <h1 id="nav-title" class="font-hana text-base sm:text-lg font-bold leading-tight text-slate-100">بوابة التسجيل في المنح الدراسية الإقليمية</h1>
@@ -128,7 +128,6 @@
             <div class="max-w-4xl mx-auto">
                 <span class="inline-block bg-emerald-500/10 text-emerald-400 text-xs px-4 py-1.5 rounded-full font-bold border border-emerald-500/20 mb-4 shadow-inner">
                     <span id="hero-badge-prefix">التسجيلات الجامعية خارج الوطن</span> 
-                    <!-- حماية ترتيب السنة 2027-2028 من الانعكاس -->
                     <span dir="ltr" class="inline-block tracking-wider font-sans">&#8206;2027-2028&#8206;</span>
                 </span>
                 
@@ -170,7 +169,7 @@
         </section>
     </main>
 
-    <!-- 5. التذييل المثبت في أسفل الشاشة تماماً -->
+    <!-- 5. التذييل في أقصى أسفل الشاشة تماماً -->
     <footer class="bg-slate-900 text-slate-400 py-5 text-center text-xs font-thesans border-t border-slate-800 w-full mt-auto">
         <p>© <span dir="ltr" class="inline-block font-sans">&#8206;2027-2028&#8206;</span> <span id="footer-text">بوابة التسجيل في المنح الدراسية الإقليمية. جميع الحقوق محفوظة.</span></p>
     </footer>
