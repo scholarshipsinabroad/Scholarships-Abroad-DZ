@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="doc-title">بوابة التسجيل في المنح الدراسية الإقليمية</title>
 
-    <!-- Tailwind CSS & FontAwesome -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -47,31 +46,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        .preloader-hidden {
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
-        }
-        .preloader-visible {
-            opacity: 1;
-            visibility: visible;
-            transition: opacity 0.2s ease-in;
-        }
-
-        .seamless-logo-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: transparent;
-        }
-
-        .seamless-logo-img {
-            height: 48px;
-            width: auto;
-            object-fit: contain;
-            mix-blend-mode: lighten;
-        }
-
         .marquee-container {
             width: 100%;
             overflow: hidden;
@@ -90,32 +64,26 @@
         }
 
         .btn-glow {
-            animation: glow-pulse 1.5s infinite alternate;
             box-shadow: 0 0 15px rgba(16, 185, 129, 0.6);
-        }
-
-        @keyframes glow-pulse {
-            0% { shadow: 0 0 8px rgba(16, 185, 129, 0.4); }
-            100% { shadow: 0 0 22px rgba(16, 185, 129, 0.9); }
         }
     </style>
 </head>
 <body class="bg-slate-100 text-slate-800 flex flex-col min-h-screen pb-12">
 
-    <!-- 1. شاشة التحميل -->
-    <div id="preloader" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-white preloader-hidden">
+    <!-- 1. شاشة التحميل الافتراضية عند فتح الموقع (تستمر 2 ثواني) -->
+    <div id="preloader" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-white">
         <div class="relative flex flex-col items-center">
             <div class="dz-spinner mb-6"></div>
-            <p id="loader-text" class="font-hana text-2xl font-bold text-slate-900">جاري التحميل</p>
+            <p id="loader-text" class="font-hana text-2xl font-bold text-slate-900">جاري التحميل...</p>
         </div>
     </div>
 
-    <!-- 2. الشريط العلوي الدائم -->
+    <!-- 2. الشريط العلوي -->
     <header class="bg-slate-900 text-white shadow-lg sticky top-0 z-50 border-b border-slate-800">
         <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center gap-3 cursor-pointer" onclick="navigateTo('step-home')">
-                <div class="seamless-logo-container">
-                    <img src="IMG_20260825_032939.png" alt="شعار المنصة" class="seamless-logo-img">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="showLoaderAndNavigate('step-home')">
+                <div class="flex items-center justify-center bg-transparent">
+                    <img src="IMG_20260825_032939.png" alt="Logo" class="h-12 w-auto object-contain">
                 </div>
                 <div>
                     <h1 id="nav-title" class="font-hana text-base sm:text-lg font-bold leading-tight text-slate-100">بوابة التسجيل في المنح الدراسية الإقليمية</h1>
@@ -124,7 +92,7 @@
             </div>
 
             <div class="flex flex-col items-end gap-1.5">
-                <button id="btn-login" onclick="navigateTo('step-profile')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm px-5 py-2 rounded-lg font-bold transition shadow-md border border-emerald-500/30">
+                <button id="btn-login" onclick="showLoaderAndNavigate('step-profile')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm px-5 py-2 rounded-lg font-bold transition shadow-md border border-emerald-500/30">
                     تسجيل الدخول
                 </button>
                 <div class="flex items-center gap-2 text-[11px] font-thesans text-slate-400 px-1">
@@ -141,13 +109,13 @@
     <!-- المحتوى الرئيسي -->
     <main class="flex-grow">
         
-        <!-- المرحلة 1: الصفحة الرئيسية (تظهر أولاً) -->
+        <!-- الواجهة الرئيسية (واجهة الترحيب) -->
         <div id="step-home" class="page-step">
             <section class="bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-white py-14 px-4 text-center border-b border-slate-800">
                 <div class="max-w-4xl mx-auto">
                     <span class="inline-block bg-emerald-500/10 text-emerald-400 text-xs px-4 py-1.5 rounded-full font-bold border border-emerald-500/20 mb-4 shadow-inner">
                         <span id="hero-badge-prefix">التسجيلات الجامعية خارج الوطن</span> 
-                        <span dir="ltr" class="inline-block tracking-wider font-sans">&#8206;2027-2028&#8206;</span>
+                        <span dir="ltr" class="inline-block tracking-wider font-sans">2027-2028</span>
                     </span>
                     <h2 id="hero-title" class="font-hana text-3xl sm:text-5xl font-extrabold mt-2 mb-6 leading-relaxed text-slate-50">
                         الأرضية الرقمية الرسمية للتسجيل في المنح الدراسية
@@ -170,7 +138,7 @@
                         <p id="cta-subtitle" class="text-lg sm:text-xl font-bold text-emerald-600 font-thesans mb-10">
                             ملايين المنح تنتظرك في الخارج
                         </p>
-                        <button onclick="navigateTo('step-profile')" class="inline-flex items-center justify-center gap-3 bg-gradient-to-r from-emerald-700 to-emerald-600 hover:from-emerald-800 hover:to-emerald-700 text-white font-hana font-bold text-xl px-12 py-4 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all border border-emerald-500/30">
+                        <button onclick="showLoaderAndNavigate('step-profile')" class="inline-flex items-center justify-center gap-3 bg-gradient-to-r from-emerald-700 to-emerald-600 hover:from-emerald-800 hover:to-emerald-700 text-white font-hana font-bold text-xl px-12 py-4 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all border border-emerald-500/30">
                             <span id="btn-register">التسجيل الآن</span>
                             <i id="btn-icon" class="fa-solid fa-arrow-left text-base"></i>
                         </button>
@@ -179,7 +147,7 @@
             </section>
         </div>
 
-        <!-- المرحلة 2: واجهة إعداد الملف الشخصي (5 مراحل) -->
+        <!-- واجهة إعداد الملف الشخصي -->
         <div id="step-profile" class="page-step hidden">
             
             <div class="bg-teal-900 text-white pt-8 pb-20 px-4 relative">
@@ -190,28 +158,25 @@
                     </div>
                 </div>
 
-                <!-- الشريط الملخص العلوي للمستخدم (فارغ افتراضياً حتى حفظ البيانات) -->
+                <!-- شريط معلومات الملف الشخصي (خالي من البيانات تماماً وتظهر النسبة المئوية فقط) -->
                 <div class="max-w-4xl mx-auto bg-white text-slate-800 rounded-2xl shadow-lg p-4 flex items-center justify-between absolute left-1/2 -translate-x-1/2 -bottom-10 w-[92%] border border-slate-100">
                     <div class="flex items-center gap-4">
                         <div class="relative">
-                            <div id="avatar-placeholder" class="w-14 h-14 rounded-full bg-emerald-600 text-white font-bold text-xl flex items-center justify-center border-2 border-emerald-500 shadow-sm">
-                                US
+                            <div id="avatar-placeholder" class="w-14 h-14 rounded-full bg-slate-200 text-slate-400 font-bold text-xl flex items-center justify-center border-2 border-slate-300">
+                                <i class="fa-solid fa-user"></i>
                             </div>
-                            <img id="user-avatar" src="" class="w-14 h-14 rounded-full object-cover border-2 border-emerald-500 shadow-sm hidden" alt="المستخدم">
-                            <span class="absolute bottom-0 right-0 bg-emerald-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full" id="progress-percent">0%</span>
+                            <img id="user-avatar" src="" class="w-14 h-14 rounded-full object-cover border-2 border-emerald-500 shadow-sm hidden" alt="User">
+                            <span class="absolute bottom-0 right-0 bg-emerald-600 text-white text-[11px] font-bold px-1.5 py-0.5 rounded-full" id="progress-percent">0%</span>
                         </div>
                         <div>
-                            <h4 id="display-user-name" class="font-bold text-slate-900 text-base">لم يتم إدخال الاسم بعد</h4>
-                            <p id="display-user-email" class="text-xs text-slate-400 font-thesans">البريد سيظهر في الخطوة الأخيرة</p>
+                            <h4 id="display-user-name" class="font-bold text-slate-400 text-base">---</h4>
+                            <p id="display-user-email" class="text-xs text-slate-300 font-thesans">---</p>
                         </div>
                     </div>
-                    <button class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:bg-slate-200">
-                        <i class="fa-solid fa-chevron-down text-xs"></i>
-                    </button>
                 </div>
             </div>
 
-            <!-- نموذج البيانات والشريط الرقمي للمراحل 1 - 5 -->
+            <!-- خط سير المراحل (1 - 5) -->
             <div class="max-w-4xl mx-auto px-4 pt-16 pb-12">
                 <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 sm:p-10">
                     
@@ -241,13 +206,12 @@
                         </div>
                     </div>
 
-                    <!-- نموذج المرحلة الأولى -->
+                    <!-- نموذج المرحلة 1: البيانات الشخصية -->
                     <form id="profile-form-step1" oninput="checkFormValidity()" onchange="checkFormValidity()" class="space-y-6">
-                        <div class="flex items-center gap-2 border-r-4 border-emerald-600 pr-3 mb-6">
+                        <div class="flex items-center gap-2 border-r-4 border-emerald-600 pr-3 mb-6" id="sec-personal-border">
                             <h3 id="sec-personal-title" class="font-hana text-xl font-bold text-slate-900">البيانات الشخصية</h3>
                         </div>
 
-                        <!-- الإسم واللقب -->
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                             <div>
                                 <label id="lbl-fname" class="block text-sm font-bold text-slate-700 mb-2">الإسم <span class="text-red-500">*</span></label>
@@ -259,7 +223,6 @@
                             </div>
                         </div>
 
-                        <!-- تاريخ الميلاد وولاية الإقامة -->
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                             <div>
                                 <label id="lbl-bdate" class="block text-sm font-bold text-slate-700 mb-2">تاريخ الميلاد <span class="text-red-500">*</span></label>
@@ -268,47 +231,44 @@
                             <div>
                                 <label id="lbl-residence" class="block text-sm font-bold text-slate-700 mb-2">ولاية الإقامة <span class="text-red-500">*</span></label>
                                 <select id="select-residence-state" required class="dz-states-select w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 outline-none font-thesans text-sm bg-white">
-                                    <option value="">اختر ولاية الإقامة</option>
+                                    <option value="" id="opt-select-residence">اختر ولاية الإقامة</option>
                                 </select>
                             </div>
                         </div>
 
-                        <!-- نوع الهوية ورقم التعريف الوطني -->
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                             <div>
                                 <label id="lbl-idtype" class="block text-sm font-bold text-slate-700 mb-2">نوع الهوية <span class="text-red-500">*</span></label>
                                 <select required class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 outline-none font-thesans text-sm bg-white">
-                                    <option value="">اختر نوع الهوية</option>
+                                    <option value="" id="opt-select-idtype">اختر نوع الهوية</option>
                                     <option value="cin" id="opt-cin">بطاقة التعريف الوطنية</option>
                                     <option value="license" id="opt-license">رخصة السياقة</option>
                                 </select>
                             </div>
                             <div>
                                 <label id="lbl-nin" class="block text-sm font-bold text-slate-700 mb-2">رقم التعريف الوطني (NIN) <span class="text-red-500">*</span></label>
-                                <input type="number" required placeholder="أدخل رقم التعريف الوطني" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 outline-none font-thesans text-sm">
+                                <input type="number" id="input-nin" required placeholder="أدخل رقم التعريف الوطني" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 outline-none font-thesans text-sm">
                             </div>
                         </div>
 
-                        <!-- رقم بطاقة التعريف ومكان الميلاد -->
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                             <div>
                                 <label id="lbl-idnum" class="block text-sm font-bold text-slate-700 mb-2">رقم بطاقة التعريف الوطنية / رخصة السياقة <span class="text-red-500">*</span></label>
-                                <input type="text" required placeholder="أدخل رقم الوثيقة" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 outline-none font-thesans text-sm">
+                                <input type="text" id="input-idnum" required placeholder="أدخل رقم الوثيقة" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 outline-none font-thesans text-sm">
                             </div>
                             <div>
                                 <label id="lbl-bplace" class="block text-sm font-bold text-slate-700 mb-2">مكان الميلاد <span class="text-red-500">*</span></label>
                                 <select id="select-birth-state" required class="dz-states-select w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 outline-none font-thesans text-sm bg-white">
-                                    <option value="">اختر مكان الميلاد</option>
+                                    <option value="" id="opt-select-bplace">اختر مكان الميلاد</option>
                                 </select>
                             </div>
                         </div>
 
-                        <!-- الحالة الاجتماعية وحالة الإعاقة -->
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                             <div>
                                 <label id="lbl-status" class="block text-sm font-bold text-slate-700 mb-2">الحالة الاجتماعية <span class="text-red-500">*</span></label>
                                 <select required class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 outline-none font-thesans text-sm bg-white">
-                                    <option value="">اختر الحالة الاجتماعية</option>
+                                    <option value="" id="opt-select-status">اختر الحالة الاجتماعية</option>
                                     <option value="single" id="opt-single">أعزب / عزباء</option>
                                     <option value="married" id="opt-married">متزوج / متزوجة</option>
                                     <option value="divorced" id="opt-divorced">مطلق / مطلقة</option>
@@ -328,7 +288,6 @@
                             </div>
                         </div>
 
-                        <!-- رفع الصورة الشخصية (Scanner) -->
                         <div class="pt-4 border-t border-slate-100">
                             <label id="lbl-upload-photo" class="block text-sm font-bold text-slate-800 mb-2">الصورة الشخصية (4 × 6) - بصيغة Scanner <span class="text-red-500">*</span></label>
                             <div class="bg-slate-50 border-2 border-dashed border-slate-300 rounded-2xl p-6 text-center hover:bg-slate-100/80 transition relative">
@@ -336,18 +295,17 @@
                                 <div class="flex flex-col items-center justify-center">
                                     <i class="fa-solid fa-cloud-arrow-up text-3xl text-emerald-600 mb-2"></i>
                                     <p id="lbl-click-avatar" class="text-sm font-bold text-slate-700">اضغط لرفع الصورة الشخصية (Scanner)</p>
-                                    <p class="text-xs text-slate-400 mt-1">PNG, JPG, JPEG — حد أقصى 5 ميجابايت</p>
+                                    <p id="lbl-limit-photo" class="text-xs text-slate-400 mt-1">PNG, JPG, JPEG — حد أقصى 5 ميجابايت</p>
                                     <div id="avatar-preview-container" class="mt-3 flex items-center gap-3 hidden">
                                         <span id="file-avatar-name" class="text-xs font-bold text-emerald-600"></span>
                                         <button type="button" onclick="resetFile('file-avatar')" class="z-20 text-xs bg-red-100 text-red-600 px-3 py-1 rounded-lg font-bold hover:bg-red-200 transition">
-                                            <i class="fa-solid fa-rotate font-bold"></i> تغيير الصورة
+                                            <i class="fa-solid fa-rotate font-bold"></i> <span id="lbl-change-photo">تغيير الصورة</span>
                                         </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- رفع بطاقة التعريف الوطنية / رخصة السياقة -->
                         <div class="pt-4">
                             <label id="lbl-upload-id" class="block text-sm font-bold text-slate-800 mb-2">رفع بطاقة التعريف الوطنية / رخصة السياقة <span class="text-red-500">*</span></label>
                             <div class="bg-slate-50 border-2 border-dashed border-slate-300 rounded-2xl p-6 text-center hover:bg-slate-100/80 transition relative">
@@ -355,24 +313,34 @@
                                 <div class="flex flex-col items-center justify-center">
                                     <i class="fa-solid fa-id-card text-3xl text-emerald-600 mb-2"></i>
                                     <p id="lbl-click-id" class="text-sm font-bold text-slate-700">اضغط لرفع وثيقة الهوية الممسوحة ضوئياً</p>
-                                    <p class="text-xs text-slate-400 mt-1">PDF, JPG, PNG — حد أقصى 10 ميجابايت</p>
+                                    <p id="lbl-limit-id" class="text-xs text-slate-400 mt-1">PDF, JPG, PNG — حد أقصى 10 ميجابايت</p>
                                     <div id="identity-preview-container" class="mt-3 flex items-center gap-3 hidden">
                                         <span id="file-identity-name" class="text-xs font-bold text-emerald-600"></span>
                                         <button type="button" onclick="resetFile('file-identity')" class="z-20 text-xs bg-red-100 text-red-600 px-3 py-1 rounded-lg font-bold hover:bg-red-200 transition">
-                                            <i class="fa-solid fa-rotate font-bold"></i> تغيير الوثيقة
+                                            <i class="fa-solid fa-rotate font-bold"></i> <span id="lbl-change-id">تغيير الوثيقة</span>
                                         </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- زر الحفظ والمتابعة (معطل تماماً ولن يعمل إلا عند تكميل الحقول) -->
                         <div class="pt-6 flex justify-end">
-                            <button type="button" id="btn-save-step1" disabled onclick="submitStep1()" class="bg-slate-300 text-slate-500 font-hana font-bold text-lg px-10 py-3.5 rounded-xl transition-all duration-300 cursor-not-allowed">
-                                <span id="btn-save-text">الحفظ والمتابعة</span> <i class="fa-solid fa-arrow-left mr-2"></i>
+                            <button type="button" id="btn-save-step1" disabled onclick="nextStep(2)" class="bg-slate-300 text-slate-500 font-hana font-bold text-lg px-10 py-3.5 rounded-xl transition-all duration-300 cursor-not-allowed flex items-center gap-2">
+                                <span id="btn-save-text">الحفظ والمتابعة</span> <i id="btn-save-icon" class="fa-solid fa-arrow-left"></i>
                             </button>
                         </div>
                     </form>
+
+                    <!-- نموذج المرحلة 2: البيانات الأساسية -->
+                    <div id="profile-form-step2" class="hidden space-y-6">
+                        <div class="flex items-center gap-2 border-r-4 border-emerald-600 pr-3 mb-6">
+                            <h3 id="sec-basic-title" class="font-hana text-xl font-bold text-slate-900">البيانات الأساسية</h3>
+                        </div>
+                        <div class="p-8 bg-slate-50 rounded-2xl border border-slate-200 text-center">
+                            <p id="step2-welcome-text" class="text-slate-700 font-bold text-lg mb-4">تم الانتقال إلى المرحلة 2 بنجاح (البيانات الأساسية)</p>
+                            <button type="button" onclick="nextStep(1)" class="bg-slate-600 text-white px-6 py-2 rounded-xl text-sm font-bold">الرجوع للمرحلة 1</button>
+                        </div>
+                    </div>
 
                 </div>
             </div>
@@ -380,69 +348,159 @@
 
     </main>
 
-    <!-- 3. الشريط الأسفل الدائم -->
+    <!-- الشريط الأسفل -->
     <footer class="bg-slate-900 text-slate-400 py-2.5 border-t border-slate-800 w-full fixed bottom-0 left-0 z-50 overflow-hidden shadow-2xl">
         <div class="marquee-container">
             <p class="marquee-content text-xs font-thesans m-0">
-                © <span dir="ltr" class="inline-block font-sans">&#8206;2027-2028&#8206;</span> <span id="footer-text">بوابة التسجيل في المنح الدراسية الإقليمية. جميع الحقوق محفوظة.</span>
+                © <span dir="ltr" class="inline-block font-sans">2027-2028</span> <span id="footer-text">بوابة التسجيل في المنح الدراسية الإقليمية. جميع الحقوق محفوظة.</span>
             </p>
         </div>
     </footer>
 
     <script>
-        // قائمة ولايات الجزائر الـ 69 بالترتيب الكامل
-        const dzWilayas = [
-            "(01) أدرار", "(02) الشلف", "(03) الأغواط", "(04) أم البواقي", "(05) باتنة", 
-            "(06) بجاية", "(07) بسكرة", "(08) بشار", "(09) البليدة", "(10) البويرة", 
-            "(11) تمنراست", "(12) تبسة", "(13) تلمسان", "(14) تيارت", "(15) تيزي وزو", 
-            "(16) الجزائر العاصمة", "(17) الجلفة", "(18) جيجل", "(19) سطيف", "(20) سعيدة", 
-            "(21) سكيكدة", "(22) سيدي بلعباس", "(23) عنابة", "(24) قالمة", "(25) قسنطينة", 
-            "(26) المدية", "(27) مستغانم", "(28) المسيلة", "(29) معسكر", "(30) ورقلة", 
-            "(31) وهران", "(32) البيض", "(33) إليزي", "(34) برج بوعريريج", "(35) بومرداس", 
-            "(36) الطارف", "(37) تندوف", "(38) تسمسيلت", "(39) الوادي", "(40) خنشلة", 
-            "(41) سوق أهراس", "(42) تيبازة", "(43) ميلة", "(44) عين الدفلى", "(45) النعامة", 
-            "(46) عين تموشنت", "(47) غرداية", "(48) غليزان", "(49) تيميمون", "(50) برج باجي مختار", 
-            "(51) أولاد جلال", "(52) بني عباس", "(53) عين صالح", "(54) عين قزام", "(55) تقرت", 
-            "(56) جانت", "(57) المغير", "(58) المنيعة", "(59) آفلو", "(60) بريكة", 
-            "(61) القنطرة", "(62) بئر العاتر", "(63) العريشة", "(64) قصر الشلالة", "(65) مسعد", 
-            "(66) عين وسارة", "(67) قصر البخاري", "(68) بوسعادة", "(69) الأبيض سيدي الشيخ"
-        ];
+        // الولايات باللغات الثلاث
+        const dzWilayasData = {
+            ar: [
+                "(01) أدرار", "(02) الشلف", "(03) الأغواط", "(04) أم البواقي", "(05) باتنة", 
+                "(06) بجاية", "(07) بسكرة", "(08) بشار", "(09) البليدة", "(10) البويرة", 
+                "(11) تمنراست", "(12) تبسة", "(13) تلمسان", "(14) تيارت", "(15) تيزي وزو", 
+                "(16) الجزائر العاصمة", "(17) الجلفة", "(18) جيجل", "(19) سطيف", "(20) سعيدة", 
+                "(21) سكيكدة", "(22) سيدي بلعباس", "(23) عنابة", "(24) قالمة", "(25) قسنطينة", 
+                "(26) المدية", "(27) مستغانم", "(28) المسيلة", "(29) معسكر", "(30) ورقلة", 
+                "(31) وهران", "(32) البيض", "(33) إليزي", "(34) برج بوعريريج", "(35) بومرداس", 
+                "(36) الطارف", "(37) تندوف", "(38) تسمسيلت", "(39) الوادي", "(40) خنشلة", 
+                "(41) سوق أهراس", "(42) تيبازة", "(43) ميلة", "(44) عين الدفلى", "(45) النعامة", 
+                "(46) عين تموشنت", "(47) غرداية", "(48) غليزان", "(49) تيميمون", "(50) برج باجي مختار", 
+                "(51) أولاد جلال", "(52) بني عباس", "(53) عين صالح", "(54) عين قزام", "(55) تقرت", 
+                "(56) جانت", "(57) المغير", "(58) المنيعة", "(59) آفلو", "(60) بريكة", 
+                "(61) القنطرة", "(62) بئر العاتر", "(63) العريشة", "(64) قصر الشلالة", "(65) مسعد", 
+                "(66) عين وسارة", "(67) قصر البخاري", "(68) بوسعادة", "(69) الأبيض سيدي الشيخ"
+            ],
+            fr: [
+                "(01) Adrar", "(02) Chlef", "(03) Laghouat", "(04) Oum El Bouaghi", "(05) Batna",
+                "(06) Béjaïa", "(07) Biskra", "(08) Béchar", "(09) Blida", "(10) Bouira",
+                "(11) Tamanrasset", "(12) Tébessa", "(13) Tlemcen", "(14) Tiaret", "(15) Tizi Ouzou",
+                "(16) Alger", "(17) Djelfa", "(18) Jijel", "(19) Sétif", "(20) Saïda",
+                "(21) Skikda", "(22) Sidi Bel Abbès", "(23) Annaba", "(24) Guelma", "(25) Constantine",
+                "(26) Médéa", "(27) Mostaganem", "(28) M'Sila", "(29) Mascara", "(30) Ouargla",
+                "(31) Oran", "(32) El Bayadh", "(33) Illizi", "(34) Bordj Bou Arréridj", "(35) Boumerdès",
+                "(36) El Tarf", "(37) Tindouf", "(38) Tissemsilt", "(39) El Oued", "(40) Khenchela",
+                "(41) Souk Ahras", "(42) Tipaza", "(43) Mila", "(44) Aïn Defla", "(45) Naâma",
+                "(46) Aïn Témouchent", "(47) Ghardaïa", "(48) Relizane", "(49) Timimoun", "(50) Bordj Badji Mokhtar",
+                "(51) Ouled Djellal", "(52) Béni Abbès", "(53) In Salah", "(54) In Guezzam", "(55) Touggourt",
+                "(56) Djanet", "(57) El M'Ghair", "(58) El Meniaa", "(59) Aflou", "(60) Barika",
+                "(61) El Kantara", "(62) Bir El Ater", "(63) El Aricha", "(64) Ksar Chellala", "(65) M'Ssaaed",
+                "(66) Aïn Oussera", "(67) Ksar El Boukhari", "(68) Bou Saâda", "(69) El Abiodh Sidi Cheikh"
+            ],
+            en: [
+                "(01) Adrar", "(02) Chlef", "(03) Laghouat", "(04) Oum El Bouaghi", "(05) Batna",
+                "(06) Bejaia", "(07) Biskra", "(08) Bechar", "(09) Blida", "(10) Bouira",
+                "(11) Tamanrasset", "(12) Tebessa", "(13) Tlemcen", "(14) Tiaret", "(15) Tizi Ouzou",
+                "(16) Algiers", "(17) Djelfa", "(18) Jijel", "(19) Setif", "(20) Saida",
+                "(21) Skikda", "(22) Sidi Bel Abbes", "(23) Annaba", "(24) Guelma", "(25) Constantine",
+                "(26) Medea", "(27) Mostaganem", "(28) M'Sila", "(29) Mascara", "(30) Ouargla",
+                "(31) Oran", "(32) El Bayadh", "(33) Illizi", "(34) Bordj Bou Arreridj", "(35) Boumerdes",
+                "(36) El Tarf", "(37) Tindouf", "(38) Tissemsilt", "(39) El Oued", "(40) Khenchela",
+                "(41) Souk Ahras", "(42) Tipaza", "(43) Mila", "(44) Ain Defla", "(45) Naama",
+                "(46) Ain Temouchent", "(47) Ghardaia", "(48) Relizane", "(49) Timimoun", "(50) Bordj Badji Mokhtar",
+                "(51) Ouled Djellal", "(52) Beni Abbes", "(53) In Salah", "(54) In Guezzam", "(55) Touggourt",
+                "(56) Djanet", "(57) El M'Ghair", "(58) El Meniaa", "(59) Aflou", "(60) Barika",
+                "(61) El Kantara", "(62) Bir El Ater", "(63) El Aricha", "(64) Ksar Chellala", "(65) M'Ssaaed",
+                "(66) Ain Oussera", "(67) Ksar El Boukhari", "(68) Bou Saada", "(69) El Abiodh Sidi Cheikh"
+            ]
+        };
 
-        document.addEventListener("DOMContentLoaded", () => {
+        let currentLang = 'ar';
+
+        // ملء الولايات حسب اللغة المختارة
+        function populateStates(lang) {
             const selects = document.querySelectorAll('.dz-states-select');
             selects.forEach(select => {
-                dzWilayas.forEach(wilaya => {
+                const currentVal = select.value;
+                const firstOptText = select.options[0].textContent;
+                select.innerHTML = '';
+                
+                const defaultOpt = document.createElement('option');
+                defaultOpt.value = "";
+                defaultOpt.textContent = firstOptText;
+                select.appendChild(defaultOpt);
+
+                dzWilayasData[lang].forEach(w => {
                     const opt = document.createElement('option');
-                    opt.value = wilaya;
-                    opt.textContent = wilaya;
+                    opt.value = w;
+                    opt.textContent = w;
                     select.appendChild(opt);
                 });
+                select.value = currentVal;
             });
+        }
+
+        // تشغيل واجهة التحميل 2 ثانية عند فتح الصفحة أول مرة
+        window.addEventListener('load', () => {
+            populateStates('ar');
+            setTimeout(() => {
+                document.getElementById('preloader').style.display = 'none';
+            }, 2000);
         });
 
-        // التعامل مع رفع الصورة الشخصية
-        function handleAvatarUpload(event) {
-            const file = event.target.files[0];
+        // الانتقال مع واجهة تحميل 2 ثواني
+        function showLoaderAndNavigate(targetStepId) {
+            const loader = document.getElementById('preloader');
+            loader.style.display = 'flex';
+            setTimeout(() => {
+                document.querySelectorAll('.page-step').forEach(step => step.classList.add('hidden'));
+                document.getElementById(targetStepId).classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                loader.style.display = 'none';
+            }, 2000);
+        }
+
+        // الانتقال بين خطوات التسجيل (تحديث النسبة 20% لكل مرحلة)
+        function nextStep(stepNum) {
+            document.getElementById('current-step-num').textContent = stepNum;
+            
+            if (stepNum === 2) {
+                document.getElementById('profile-form-step1').classList.add('hidden');
+                document.getElementById('profile-form-step2').classList.remove('hidden');
+                document.getElementById('progress-percent').textContent = '20%';
+                document.getElementById('step-progress-bar').style.width = '20%';
+                
+                document.getElementById('circle-2').classList.replace('bg-white', 'bg-emerald-600');
+                document.getElementById('circle-2').classList.replace('text-slate-500', 'text-white');
+                document.getElementById('circle-2').classList.replace('border-slate-300', 'border-emerald-600');
+                document.getElementById('st-2').classList.replace('text-slate-400', 'text-emerald-600');
+            } else if (stepNum === 1) {
+                document.getElementById('profile-form-step2').classList.add('hidden');
+                document.getElementById('profile-form-step1').classList.remove('hidden');
+                document.getElementById('progress-percent').textContent = '0%';
+                document.getElementById('step-progress-bar').style.width = '0%';
+                
+                document.getElementById('circle-2').classList.replace('bg-emerald-600', 'bg-white');
+                document.getElementById('circle-2').classList.replace('text-white', 'text-slate-500');
+                document.getElementById('circle-2').classList.replace('border-emerald-600', 'border-slate-300');
+                document.getElementById('st-2').classList.replace('text-emerald-600', 'text-slate-400');
+            }
+        }
+
+        function handleAvatarUpload(e) {
+            const file = e.target.files[0];
             if (file) {
                 document.getElementById('file-avatar-name').textContent = file.name;
                 document.getElementById('avatar-preview-container').classList.remove('hidden');
-                
                 const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = function(evt) {
                     const avatarImg = document.getElementById('user-avatar');
-                    const placeholder = document.getElementById('avatar-placeholder');
-                    avatarImg.src = e.target.result;
+                    avatarImg.src = evt.target.result;
                     avatarImg.classList.remove('hidden');
-                    placeholder.classList.add('hidden');
+                    document.getElementById('avatar-placeholder').classList.add('hidden');
                 }
                 reader.readAsDataURL(file);
             }
             checkFormValidity();
         }
 
-        // التعامل مع رفع وثيقة الهوية
-        function handleIdentityUpload(event) {
-            const file = event.target.files[0];
+        function handleIdentityUpload(e) {
+            const file = e.target.files[0];
             if (file) {
                 document.getElementById('file-identity-name').textContent = file.name;
                 document.getElementById('identity-preview-container').classList.remove('hidden');
@@ -450,25 +508,22 @@
             checkFormValidity();
         }
 
-        // إمكانية تغيير الصورة أو الملف عند الضغط على زر التغيير
-        function resetFile(inputId) {
-            const input = document.getElementById(inputId);
+        function resetFile(id) {
+            const input = document.getElementById(id);
             input.value = '';
-            if (inputId === 'file-avatar') {
+            if (id === 'file-avatar') {
                 document.getElementById('avatar-preview-container').classList.add('hidden');
                 document.getElementById('user-avatar').classList.add('hidden');
                 document.getElementById('avatar-placeholder').classList.remove('hidden');
-            } else if (inputId === 'file-identity') {
+            } else {
                 document.getElementById('identity-preview-container').classList.add('hidden');
             }
             checkFormValidity();
         }
 
-        // التحقق الدقيق من اكتمال النموذج وتفعيل الزر
         function checkFormValidity() {
             const form = document.getElementById('profile-form-step1');
             const btn = document.getElementById('btn-save-step1');
-
             if (form.checkValidity()) {
                 btn.classList.remove('bg-slate-300', 'text-slate-500', 'cursor-not-allowed');
                 btn.classList.add('bg-emerald-600', 'hover:bg-emerald-700', 'text-white', 'btn-glow');
@@ -480,47 +535,11 @@
             }
         }
 
-        // عند الحفظ والمتابعة تظهر البيانات رسمياً في الشريط العلوي وتتحول النسبة إلى 20%
-        function submitStep1() {
-            const firstName = document.getElementById('input-first-name').value;
-            const lastName = document.getElementById('input-last-name').value;
-            
-            document.getElementById('display-user-name').textContent = `${firstName} ${lastName}`;
-            document.getElementById('progress-percent').textContent = '20%';
-            document.getElementById('step-progress-bar').style.width = '20%';
-
-            navigateTo('step-home');
-        }
-
-        // إدارة شاشة التحميل عند الانتقال (1.5 ثانية)
-        const preloader = document.getElementById('preloader');
-
-        function navigateTo(targetStepId) {
-            preloader.classList.remove('preloader-hidden');
-            preloader.classList.add('preloader-visible');
-
-            setTimeout(() => {
-                const steps = document.querySelectorAll('.page-step');
-                steps.forEach(step => step.classList.add('hidden'));
-
-                const targetStep = document.getElementById(targetStepId);
-                if (targetStep) {
-                    targetStep.classList.remove('hidden');
-                }
-
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-
-                preloader.classList.remove('preloader-visible');
-                preloader.classList.add('preloader-hidden');
-            }, 1500);
-        }
-
-        // نظام اللغات الشامل لكل عناصر المنحة والنموذج
+        // ترجمة شاملة وتحويل الاتجاه كلياً من اليسار لليمين LTR
         const translations = {
             ar: {
                 dir: 'rtl',
-                docTitle: 'بوابة التسجيل في المنح الدراسية الإقليمية',
-                loaderText: 'جاري التحميل',
+                loaderText: 'جاري التحميل...',
                 navTitle: 'بوابة التسجيل في المنح الدراسية الإقليمية',
                 navSubtitle: 'الجمهورية الجزائرية الديمقراطية الشعبية',
                 btnLogin: 'تسجيل الدخول',
@@ -532,7 +551,6 @@
                 btnRegister: 'التسجيل الآن',
                 btnIconClass: 'fa-solid fa-arrow-left text-base',
                 footerText: 'بوابة التسجيل في المنح الدراسية الإقليمية. جميع الحقوق محفوظة.',
-                
                 setupTitle: 'إعداد الملف الشخصي',
                 lblStep: 'الخطوة',
                 lblOf: 'من',
@@ -543,16 +561,24 @@
                 st5: 'معلومات الحساب',
                 secPersonalTitle: 'البيانات الشخصية',
                 lblFname: 'الإسم',
+                phFname: 'أدخل إسمك',
                 lblLname: 'اللقب',
+                phLname: 'أدخل لقبك',
                 lblBdate: 'تاريخ الميلاد',
                 lblResidence: 'ولاية الإقامة',
+                optSelectResidence: 'اختر ولاية الإقامة',
                 lblIdtype: 'نوع الهوية',
+                optSelectIdtype: 'اختر نوع الهوية',
                 optCin: 'بطاقة التعريف الوطنية',
                 optLicense: 'رخصة السياقة',
                 lblNin: 'رقم التعريف الوطني (NIN)',
+                phNin: 'أدخل رقم التعريف الوطني',
                 lblIdnum: 'رقم بطاقة التعريف الوطنية / رخصة السياقة',
+                phIdnum: 'أدخل رقم الوثيقة',
                 lblBplace: 'مكان الميلاد',
+                optSelectBplace: 'اختر مكان الميلاد',
                 lblStatus: 'الحالة الاجتماعية',
+                optSelectStatus: 'اختر الحالة الاجتماعية',
                 optSingle: 'أعزب / عزباء',
                 optMarried: 'متزوج / متزوجة',
                 optDivorced: 'مطلق / مطلقة',
@@ -562,13 +588,17 @@
                 lblYes: 'يوجد',
                 lblUploadPhoto: 'الصورة الشخصية (4 × 6) - بصيغة Scanner',
                 lblClickAvatar: 'اضغط لرفع الصورة الشخصية (Scanner)',
+                lblLimitPhoto: 'PNG, JPG, JPEG — حد أقصى 5 ميجابايت',
+                lblChangePhoto: 'تغيير الصورة',
                 lblUploadId: 'رفع بطاقة التعريف الوطنية / رخصة السياقة',
                 lblClickId: 'اضغط لرفع وثيقة الهوية الممسوحة ضوئياً',
-                btnSaveText: 'الحفظ والمتابعة'
+                lblLimitId: 'PDF, JPG, PNG — حد أقصى 10 ميجابايت',
+                lblChangeId: 'تغيير الوثيقة',
+                btnSaveText: 'الحفظ والمتابعة',
+                btnSaveIcon: 'fa-solid fa-arrow-left'
             },
             fr: {
                 dir: 'ltr',
-                docTitle: 'Portail d\'inscription aux bourses régionales',
                 loaderText: 'Chargement en cours...',
                 navTitle: 'Portail d\'inscription aux bourses régionales',
                 navSubtitle: 'République Algérienne Démocratique et Populaire',
@@ -581,27 +611,34 @@
                 btnRegister: 'S\'inscrire maintenant',
                 btnIconClass: 'fa-solid fa-arrow-right text-base',
                 footerText: 'Portail d\'inscription aux bourses régionales. Tous droits réservés.',
-
                 setupTitle: 'Configuration du Profil',
                 lblStep: 'Étape',
                 lblOf: 'sur',
                 st1: 'Données Personnelles',
                 st2: 'Données de Base',
                 st3: 'Données Supplémentaires',
-                st4: 'Qualifications et Pièces',
-                st5: 'Informations du Compte',
+                st4: 'Qualifications & Pièces',
+                st5: 'Infos Compte',
                 secPersonalTitle: 'Données Personnelles',
                 lblFname: 'Prénom',
+                phFname: 'Entrez votre prénom',
                 lblLname: 'Nom',
+                phLname: 'Entrez votre nom',
                 lblBdate: 'Date de Naissance',
                 lblResidence: 'Wilaya de Résidence',
+                optSelectResidence: 'Sélectionnez la wilaya de résidence',
                 lblIdtype: 'Type d\'Identité',
+                optSelectIdtype: 'Sélectionnez le type d\'identité',
                 optCin: 'Carte d\'Identité Nationale',
                 optLicense: 'Permis de Conduire',
                 lblNin: 'Numéro d\'Identification National (NIN)',
-                lblIdnum: 'N° de Carte d\'Identité / Permis de Conduire',
+                phNin: 'Entrez le numéro NIN',
+                lblIdnum: 'N° Carte d\'Identité / Permis de Conduire',
+                phIdnum: 'Entrez le numéro du document',
                 lblBplace: 'Lieu de Naissance',
+                optSelectBplace: 'Sélectionnez le lieu de naissance',
                 lblStatus: 'État Civil',
+                optSelectStatus: 'Sélectionnez l\'état civil',
                 optSingle: 'Célibataire',
                 optMarried: 'Marié(e)',
                 optDivorced: 'Divorcé(e)',
@@ -611,13 +648,17 @@
                 lblYes: 'Oui',
                 lblUploadPhoto: 'Photo Personnelle (4 × 6) - Format Scanner',
                 lblClickAvatar: 'Cliquez pour charger la photo (Scanner)',
+                lblLimitPhoto: 'PNG, JPG, JPEG — Max 5 Mo',
+                lblChangePhoto: 'Changer la photo',
                 lblUploadId: 'Charger Carte d\'Identité / Permis de Conduire',
-                lblClickId: 'Cliquez pour charger la pièce d\'identité numérisée',
-                btnSaveText: 'Sauvegarder et Continuer'
+                lblClickId: 'Cliquez pour charger le document scanné',
+                lblLimitId: 'PDF, JPG, PNG — Max 10 Mo',
+                lblChangeId: 'Changer le document',
+                btnSaveText: 'Sauvegarder et Continuer',
+                btnSaveIcon: 'fa-solid fa-arrow-right'
             },
             en: {
                 dir: 'ltr',
-                docTitle: 'Regional Scholarships Registration Portal',
                 loaderText: 'Loading...',
                 navTitle: 'Regional Scholarships Registration Portal',
                 navSubtitle: 'People\'s Democratic Republic of Algeria',
@@ -630,7 +671,6 @@
                 btnRegister: 'Register Now',
                 btnIconClass: 'fa-solid fa-arrow-right text-base',
                 footerText: 'Regional Scholarships Registration Portal. All rights reserved.',
-
                 setupTitle: 'Profile Setup',
                 lblStep: 'Step',
                 lblOf: 'of',
@@ -641,16 +681,24 @@
                 st5: 'Account Info',
                 secPersonalTitle: 'Personal Data',
                 lblFname: 'First Name',
+                phFname: 'Enter your first name',
                 lblLname: 'Last Name',
+                phLname: 'Enter your last name',
                 lblBdate: 'Date of Birth',
                 lblResidence: 'State of Residence',
+                optSelectResidence: 'Select state of residence',
                 lblIdtype: 'Identity Type',
+                optSelectIdtype: 'Select identity type',
                 optCin: 'National ID Card',
                 optLicense: 'Driver\'s License',
                 lblNin: 'National Identification Number (NIN)',
-                lblIdnum: 'ID Card / License Number',
+                phNin: 'Enter NIN number',
+                lblIdnum: 'ID Card / Driver\'s License Number',
+                phIdnum: 'Enter document number',
                 lblBplace: 'Place of Birth',
+                optSelectBplace: 'Select place of birth',
                 lblStatus: 'Marital Status',
+                optSelectStatus: 'Select marital status',
                 optSingle: 'Single',
                 optMarried: 'Married',
                 optDivorced: 'Divorced',
@@ -660,19 +708,33 @@
                 lblYes: 'Present',
                 lblUploadPhoto: 'Personal Photo (4 × 6) - Scanner Format',
                 lblClickAvatar: 'Click to upload photo (Scanner)',
+                lblLimitPhoto: 'PNG, JPG, JPEG — Max 5 MB',
+                lblChangePhoto: 'Change Photo',
                 lblUploadId: 'Upload National ID / Driver\'s License',
                 lblClickId: 'Click to upload scanned ID document',
-                btnSaveText: 'Save and Continue'
+                lblLimitId: 'PDF, JPG, PNG — Max 10 MB',
+                lblChangeId: 'Change Document',
+                btnSaveText: 'Save and Continue',
+                btnSaveIcon: 'fa-solid fa-arrow-right'
             }
         };
 
         function changeLanguage(lang) {
+            currentLang = lang;
             const data = translations[lang];
-            if (!data) return;
 
             document.documentElement.dir = data.dir;
             document.documentElement.lang = lang;
-            document.title = data.docTitle;
+
+            // تغيير حدود العنوان والاتجاه بشكل ممتاز
+            const secBorder = document.getElementById('sec-personal-border');
+            if (data.dir === 'ltr') {
+                secBorder.classList.remove('border-r-4', 'pr-3');
+                secBorder.classList.add('border-l-4', 'pl-3');
+            } else {
+                secBorder.classList.remove('border-l-4', 'pl-3');
+                secBorder.classList.add('border-r-4', 'pr-3');
+            }
 
             document.getElementById('loader-text').textContent = data.loaderText;
             document.getElementById('nav-title').textContent = data.navTitle;
@@ -687,7 +749,6 @@
             document.getElementById('btn-icon').className = data.btnIconClass;
             document.getElementById('footer-text').textContent = data.footerText;
 
-            // ترجمة عناصر إعداد الملف الشخصي
             document.getElementById('setup-title').textContent = data.setupTitle;
             document.getElementById('lbl-step').textContent = data.lblStep;
             document.getElementById('lbl-of').textContent = data.lblOf;
@@ -699,29 +760,54 @@
             document.getElementById('sec-personal-title').textContent = data.secPersonalTitle;
 
             document.getElementById('lbl-fname').childNodes[0].nodeValue = data.lblFname + ' ';
+            document.getElementById('input-first-name').placeholder = data.phFname;
+
             document.getElementById('lbl-lname').childNodes[0].nodeValue = data.lblLname + ' ';
+            document.getElementById('input-last-name').placeholder = data.phLname;
+
             document.getElementById('lbl-bdate').childNodes[0].nodeValue = data.lblBdate + ' ';
             document.getElementById('lbl-residence').childNodes[0].nodeValue = data.lblResidence + ' ';
+            document.getElementById('opt-select-residence').textContent = data.optSelectResidence;
+
             document.getElementById('lbl-idtype').childNodes[0].nodeValue = data.lblIdtype + ' ';
+            document.getElementById('opt-select-idtype').textContent = data.optSelectIdtype;
             document.getElementById('opt-cin').textContent = data.optCin;
             document.getElementById('opt-license').textContent = data.optLicense;
+
             document.getElementById('lbl-nin').childNodes[0].nodeValue = data.lblNin + ' ';
+            document.getElementById('input-nin').placeholder = data.phNin;
+
             document.getElementById('lbl-idnum').childNodes[0].nodeValue = data.lblIdnum + ' ';
+            document.getElementById('input-idnum').placeholder = data.phIdnum;
+
             document.getElementById('lbl-bplace').childNodes[0].nodeValue = data.lblBplace + ' ';
+            document.getElementById('opt-select-bplace').textContent = data.optSelectBplace;
+
             document.getElementById('lbl-status').childNodes[0].nodeValue = data.lblStatus + ' ';
+            document.getElementById('opt-select-status').textContent = data.optSelectStatus;
             document.getElementById('opt-single').textContent = data.optSingle;
             document.getElementById('opt-married').textContent = data.optMarried;
             document.getElementById('opt-divorced').textContent = data.optDivorced;
             document.getElementById('opt-widowed').textContent = data.optWidowed;
+
             document.getElementById('lbl-disability').childNodes[0].nodeValue = data.lblDisability + ' ';
             document.getElementById('lbl-no').textContent = data.lblNo;
             document.getElementById('lbl-yes').textContent = data.lblYes;
 
             document.getElementById('lbl-upload-photo').childNodes[0].nodeValue = data.lblUploadPhoto + ' ';
             document.getElementById('lbl-click-avatar').textContent = data.lblClickAvatar;
+            document.getElementById('lbl-limit-photo').textContent = data.lblLimitPhoto;
+            document.getElementById('lbl-change-photo').textContent = data.lblChangePhoto;
+
             document.getElementById('lbl-upload-id').childNodes[0].nodeValue = data.lblUploadId + ' ';
             document.getElementById('lbl-click-id').textContent = data.lblClickId;
+            document.getElementById('lbl-limit-id').textContent = data.lblLimitId;
+            document.getElementById('lbl-change-id').textContent = data.lblChangeId;
+
             document.getElementById('btn-save-text').textContent = data.btnSaveText;
+            document.getElementById('btn-save-icon').className = data.btnSaveIcon;
+
+            populateStates(lang);
 
             ['ar', 'fr', 'en'].forEach(l => {
                 const btn = document.getElementById(`lang-${l}`);
