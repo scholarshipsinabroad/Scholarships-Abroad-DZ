@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,14 +26,15 @@
         body {
             background-color: #f8fafc;
             font-family: 'HanaFont', system-ui, -apple-system, sans-serif;
-            font-feature-settings: "lnum" 1, "tnum" 1;
             overflow-x: hidden;
         }
 
-        .en-num {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        /* تصحيح اتجاه الأرقام لظهور 2027-2028 بشكل صحيح */
+        .year-text {
             direction: ltr;
+            unicode-bidi: isolate;
             display: inline-block;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
         }
 
         .font-hana { font-family: 'HanaFont', sans-serif !important; }
@@ -65,29 +66,29 @@
             transition: all 0.6s ease-out;
         }
 
-        /* إطار الشعار الرسمي المظلل */
-        .official-logo-frame {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: #111827;
-            border: 2px solid #d4af37;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.2);
+        /* تصميم الشعار المظلل بدون إطار برتقالي */
+        .official-logo-clean {
+            width: 52px;
+            height: 52px;
+            border-radius: 12px;
+            background: #0f172a;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .official-logo-frame img {
+        .official-logo-clean img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
         }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800">
+<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
 
     <!-- 1. واجهة التحميل -->
     <div id="preloader" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-white">
@@ -101,9 +102,9 @@
     <header class="bg-slate-900 text-white shadow-lg sticky top-0 z-50 border-b border-slate-800">
         <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
             
-            <!-- أقصى اليمين: الشعار الخاص المرفع مع النص الرسمي -->
+            <!-- أقصى اليمين: الشعار بدون إطار برتقالي وبشكل مظلل واضح -->
             <div class="flex items-center gap-3">
-                <div class="official-logo-frame">
+                <div class="official-logo-clean">
                     <img src="IMG_20260825_014458.png" alt="شعار المنصة">
                 </div>
                 <div>
@@ -130,58 +131,60 @@
         </div>
     </header>
 
-    <!-- 3. القسم الرئيسي (Hero Section) -->
-    <section class="bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-white py-14 px-4 text-center border-b border-slate-800">
-        <div class="max-w-4xl mx-auto">
-            <span class="inline-block bg-emerald-500/10 text-emerald-400 text-xs px-4 py-1.5 rounded-full font-bold border border-emerald-500/20 mb-4 shadow-inner">
-                <span id="hero-badge-prefix">التسجيلات الجامعية خارج الوطن</span> <span class="en-num">2027-2028</span>
-            </span>
-            
-            <h2 id="hero-title" class="font-hana text-3xl sm:text-5xl font-extrabold mt-2 mb-6 leading-relaxed text-slate-50">
-                الأرضية الرقمية الرسمية للتسجيل في المنح الدراسية
-            </h2>
-            
-            <p id="hero-desc" class="text-slate-300 text-base sm:text-lg max-w-3xl mx-auto font-thesans leading-relaxed">
-                المنصة الموحدة للطلاب الراغبين في التقديم على المنح الدراسية الإقليمية والدولية
-            </p>
-        </div>
-    </section>
-
-    <!-- 4. واجهة دعوة التسجيل الرسمية -->
-    <section class="max-w-4xl mx-auto px-4 py-20 text-center">
-        <div class="bg-white p-10 sm:p-14 rounded-3xl shadow-xl border border-slate-200/80 relative overflow-hidden">
-            <div class="absolute -top-24 -right-24 w-48 h-48 bg-emerald-50 rounded-full blur-3xl pointer-events-none"></div>
-            <div class="absolute -bottom-24 -left-24 w-48 h-48 bg-blue-50 rounded-full blur-3xl pointer-events-none"></div>
-
-            <div class="relative z-10 max-w-2xl mx-auto">
-                <div class="w-16 h-16 bg-emerald-100 text-emerald-700 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-6 shadow-inner">
-                    <i class="fa-solid fa-paper-plane"></i>
-                </div>
-
-                <h3 id="cta-title" class="font-hana text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4 leading-snug">
-                    ما الذي تنتظره! قم بالتسجيل الآن
-                </h3>
+    <!-- المحتوى الرئيسي للموقع -->
+    <main class="flex-grow">
+        <!-- 3. القسم الرئيسي (Hero Section) -->
+        <section class="bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-white py-14 px-4 text-center border-b border-slate-800">
+            <div class="max-w-4xl mx-auto">
+                <span class="inline-block bg-emerald-500/10 text-emerald-400 text-xs px-4 py-1.5 rounded-full font-bold border border-emerald-500/20 mb-4 shadow-inner">
+                    <span id="hero-badge-prefix">التسجيلات الجامعية خارج الوطن</span> <span class="year-text">2027-2028</span>
+                </span>
                 
-                <p id="cta-subtitle" class="text-lg sm:text-xl font-bold text-emerald-600 font-thesans mb-10">
-                    ملايين المنح تنتظرك في الخارج
+                <h2 id="hero-title" class="font-hana text-3xl sm:text-5xl font-extrabold mt-2 mb-6 leading-relaxed text-slate-50">
+                    الأرضية الرقمية الرسمية للتسجيل في المنح الدراسية
+                </h2>
+                
+                <p id="hero-desc" class="text-slate-300 text-base sm:text-lg max-w-3xl mx-auto font-thesans leading-relaxed">
+                    المنصة الموحدة للطلاب الراغبين في التقديم على المنح الدراسية الإقليمية والدولية
                 </p>
-
-                <a href="#register" class="inline-flex items-center justify-center gap-3 bg-gradient-to-r from-emerald-700 to-emerald-600 hover:from-emerald-800 hover:to-emerald-700 text-white font-hana font-bold text-xl px-12 py-4 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all border border-emerald-500/30">
-                    <span id="btn-register">التسجيل الآن</span>
-                    <i id="btn-icon" class="fa-solid fa-arrow-left text-base"></i>
-                </a>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- 5. التذييل (Footer) -->
-    <footer class="bg-slate-900 text-slate-400 py-6 text-center text-xs font-thesans border-t border-slate-800">
-        <p>© <span class="en-num">2027-2028</span> <span id="footer-text">بوابة التسجيل في المنح الدراسية الإقليمية. جميع الحقوق محفوظة.</span></p>
+        <!-- 4. واجهة دعوة التسجيل الرسمية -->
+        <section class="max-w-4xl mx-auto px-4 py-16 text-center">
+            <div class="bg-white p-10 sm:p-14 rounded-3xl shadow-xl border border-slate-200/80 relative overflow-hidden">
+                <div class="absolute -top-24 -right-24 w-48 h-48 bg-emerald-50 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -bottom-24 -left-24 w-48 h-48 bg-blue-50 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="relative z-10 max-w-2xl mx-auto">
+                    <div class="w-16 h-16 bg-emerald-100 text-emerald-700 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-6 shadow-inner">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </div>
+
+                    <h3 id="cta-title" class="font-hana text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4 leading-snug">
+                        ما الذي تنتظره! قم بالتسجيل الآن
+                    </h3>
+                    
+                    <p id="cta-subtitle" class="text-lg sm:text-xl font-bold text-emerald-600 font-thesans mb-10">
+                        ملايين المنح تنتظرك في الخارج
+                    </p>
+
+                    <a href="#register" class="inline-flex items-center justify-center gap-3 bg-gradient-to-r from-emerald-700 to-emerald-600 hover:from-emerald-800 hover:to-emerald-700 text-white font-hana font-bold text-xl px-12 py-4 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all border border-emerald-500/30">
+                        <span id="btn-register">التسجيل الآن</span>
+                        <i id="btn-icon" class="fa-solid fa-arrow-left text-base"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 5. التذييل في أقصى أسفل الشاشة تماماً بدون أي فراغات (Footer) -->
+    <footer class="bg-slate-900 text-slate-400 py-5 text-center text-xs font-thesans border-t border-slate-800 w-full mt-auto">
+        <p>© <span class="year-text">2027-2028</span> <span id="footer-text">بوابة التسجيل في المنح الدراسية الإقليمية. جميع الحقوق محفوظة.</span></p>
     </footer>
 
-    <!-- نظام الترجمة البرمجي (JavaScript) -->
+    <!-- نظام الترجمة والتحكم -->
     <script>
-        // إخفاء التحميل
         window.addEventListener('load', function() {
             setTimeout(function() {
                 const preloader = document.getElementById('preloader');
@@ -189,7 +192,6 @@
             }, 2000); 
         });
 
-        // قاموس الترجمات للغات الثلاث
         const translations = {
             ar: {
                 dir: 'rtl',
@@ -241,17 +243,14 @@
             }
         };
 
-        // دالة تغيير اللغة والاتجاه
         function changeLanguage(lang) {
             const data = translations[lang];
             if (!data) return;
 
-            // تغيير اتجاه وتنسيق الصفحة
             document.documentElement.dir = data.dir;
             document.documentElement.lang = lang;
             document.title = data.docTitle;
 
-            // تحديث النصوص
             document.getElementById('loader-text').textContent = data.loaderText;
             document.getElementById('nav-title').textContent = data.navTitle;
             document.getElementById('nav-subtitle').textContent = data.navSubtitle;
@@ -265,7 +264,6 @@
             document.getElementById('btn-icon').className = data.btnIconClass;
             document.getElementById('footer-text').textContent = data.footerText;
 
-            // تحديث تمييز أزرار اللغة (Active States)
             ['ar', 'fr', 'en'].forEach(l => {
                 const btn = document.getElementById(`lang-${l}`);
                 if (l === lang) {
