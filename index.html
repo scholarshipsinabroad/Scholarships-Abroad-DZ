@@ -58,21 +58,23 @@
             transition: all 0.6s ease-out;
         }
 
-        /* دمج الشعار الجديد بدون إطار مع تظليل حواف ناعم ورسمي */
-        .merged-logo-wrapper {
-            position: relative;
+        /* دمج الشعار بالكامل وإلغاء أي حدود أو مربع حوله */
+        .seamless-logo-container {
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-shrink: 0;
+            background: transparent;
+            border: none !important;
+            outline: none !important;
+            box-shadow: none !important;
         }
 
-        .merged-logo-img {
-            height: 52px;
+        .seamless-logo-img {
+            height: 48px;
             width: auto;
             object-fit: contain;
-            /* ظل محيطي ناعم لإبراز تفاصيل الشعار فوق الهيدر المظلم */
-            filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.65));
+            /* خاصية الدمج لإلغاء المربع وتجاوز الاختلاف في لون خلفية الصورة */
+            mix-blend-mode: lighten;
             border: none !important;
             outline: none !important;
         }
@@ -92,10 +94,10 @@
     <header class="bg-slate-900 text-white shadow-lg sticky top-0 z-50 border-b border-slate-800">
         <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
             
-            <!-- أقصى اليمين: الشعار الجديد مندمج بتظليل راقي بدون إطار -->
+            <!-- أقصى اليمين: الشعار مندمج كلياً بدون أي مستطيل أو إطار -->
             <div class="flex items-center gap-3">
-                <div class="merged-logo-wrapper">
-                    <img src="IMG_20260825_032939.png" alt="شعار المنصة" class="merged-logo-img">
+                <div class="seamless-logo-container">
+                    <img src="IMG_20260825_032939.png" alt="شعار المنصة" class="seamless-logo-img">
                 </div>
                 <div>
                     <h1 id="nav-title" class="font-hana text-base sm:text-lg font-bold leading-tight text-slate-100">بوابة التسجيل في المنح الدراسية الإقليمية</h1>
